@@ -24,7 +24,12 @@ export const HomeScreen = () => {
                 position: 'absolute',
                 top: '229px',
                 backgroundColor: '#FFFFFF',
-                color: '#000000'
+                color: '#000000',
+                fontFamily: 'Source Sans Pro, monospace', 
+                textTransform: 'none',
+                fontSize: '40px',
+                textAlign: 'center',
+                fontWeight: '700'
                 }} component={Link} to='/chat/:id'>
                 Create <br />
                 Workout
@@ -39,7 +44,12 @@ export const HomeScreen = () => {
                 position: 'absolute',
                 top: '229px',
                 backgroundColor: '#FFFFFF',
-                color: '#000000'
+                color: '#000000',
+                fontFamily: 'Source Sans Pro, monospace', 
+                textTransform: 'none',
+                fontSize: '40px',
+                textAlign: 'center',
+                fontWeight: '700'
                 }} component={Link} to='/progress/:id'>
                 Workout <br />
                 Progress
@@ -53,7 +63,12 @@ export const HomeScreen = () => {
                 position: 'absolute',
                 top: '655px',
                 backgroundColor: '#FFFFFF',
-                color: '#000000'
+                color: '#000000',
+                fontFamily: 'Source Sans Pro, monospace', 
+                textTransform: 'none',
+                fontSize: '40px',
+                textAlign: 'center',
+                fontWeight: '700'
                 }} component={Link} to='/profile/:id'>
                 View <br />
                 Profile

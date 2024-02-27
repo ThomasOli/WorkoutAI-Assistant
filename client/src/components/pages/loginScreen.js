@@ -34,9 +34,16 @@ export const LogInScreen = () => {
                 
                 <p className="you-can-register">
                   <span className="span">You can</span>
-                  <Button variant='text'>Register Here</Button>
-                  {/* <span className="text-wrapper-9"> Register here</span> */}
-                  <span className="span"> !</span>
+                  <Button variant='text' style={{
+                    fontFamily: 'Hind Vadodara, sans-serif', 
+                    textTransform: 'none', 
+                    fontSize: '20px', 
+                    fontWeight: '400',
+                    height: '20px',
+                    width: '145px',
+                    top: '-2px'
+                  }}> Register Here!</Button>
+                  <span className="span">!</span>
                 </p>
               </div>
             </div>
@@ -53,7 +60,7 @@ export const LogInScreen = () => {
                 <div className="text-wrapper-13">Enter email address</div>
                 <div className="overlap-group-wrapper">
                   <div className="div-wrapper">
-                    <TextField id="outlined-basic" label="Email" variant="outlined" style={{width: '425px'}}/>
+                    <TextField id="outlined-basic" label="Email" variant="outlined" style={{width: '425px', fontFamily: 'Questrial, sans-serif', textTransform: 'none'}}/>
                   </div>
                 </div>
               </div>
@@ -61,12 +68,12 @@ export const LogInScreen = () => {
                 <div className="text-wrapper-13">Enter password</div>
                 <div className="overlap-group-wrapper">
                   <div className="div-wrapper">
-                    <TextField id="outlined-basic" label="Password" variant="outlined" style={{width: '425px'}} />
+                    <TextField id="outlined-basic" label="Password" variant="outlined" style={{width: '425px', fontFamily: 'Questrial, sans-serif', textTransform: 'none'}} />
                   </div>
-                  
                 </div>
               </div>
-              <Button variant="contained" style={{width: '425px', top: '500px', left: '30px'}}>Sign In</Button>
+              <Button variant='text' style={{top: '425px', left: '300px', width: '200px', fontFamily: 'Questrial, sans-serif', textTransform: 'none', fontSize: '12px'}}>Forgot Password?</Button>
+              <Button variant="contained" style={{width: '425px', top: '500px', left: '30px', fontFamily: 'Source Sans Pro, monospace', textTransform: 'none'}}>Sign In</Button>
             </div>
             {/* add top navbar */}
             {/* <TopNavBar
