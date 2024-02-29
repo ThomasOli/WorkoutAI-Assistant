@@ -19,7 +19,7 @@ import { Link } from 'react-router-dom';
 import './userNavbar.css';
 
 const drawerWidth = 240;
-const navItems = [{key: 'Create Workout', link: '/chat/:id'}, {key: 'Workout Progress', link: '/progress/:id'}, {key: 'Profile', link: '/profile/:id'}];
+const navItems = [{key: 'Create Workout', link: '/chat/:id'}, {key: 'Workout Progress', link: '/progress/:id'}, {key: 'Profile', link: '/profile/:id'}, { key: 'Log Out', link: '/login'}];
 
 export const UserNavbar = (props) => {
   const { window } = props;
