@@ -54,6 +54,7 @@ export const HomeScreen = () => {
                 Workout <br />
                 Progress
             </Button>
+
             <Button variant="contained" style={{
                 width: '284px', 
                 height: '284px', 
@@ -77,6 +78,7 @@ export const HomeScreen = () => {
             <div className="home-navbar">
               <div className="overlap-group">
                 <div className="rectangle" />
+                {/* want to add when a user clicks on Raise the Bar it brings them to the home page */}
                 <div className="text-wrapper-3">Raise The Bar</div>
                 {/* <Logo className="logo-instance" /> */}
               </div>
