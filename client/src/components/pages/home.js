@@ -3,14 +3,12 @@ import logo from "../images/raisethebarLogoNoBackground.png";
 import Button from '@mui/material/Button';
 import { Link } from "react-router-dom";
 import UserNavbar from "./userNavbar";
-import DrawerAppBar from './menuBarTest';
 import "./home.css";
 
 export const HomeScreen = () => {
   return (
     <div className="home-screen">
       {/* navbar */}
-      {/* <DrawerAppBar/> */}
       <UserNavbar />
       {/* Chat with AI Button */}
       <Button variant="contained" style={{
