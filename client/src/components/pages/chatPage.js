@@ -1,8 +1,12 @@
 import React from 'react'
+import { UserNavbar } from "./userNavbar";
 
 export const ChatPage = () => {
   return (
-    <div>chatPage</div>
+    <div>
+      <UserNavbar/>
+      chatPage
+    </div>
   )
 }
 
