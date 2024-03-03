@@ -1,0 +1,12 @@
+ .profile-page {
+    background-color: transparent;
+    background-image: url('../images/glassFrameFullBackground.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    min-height: 100vh;
+    height: auto;
+    width: auto;
+ }

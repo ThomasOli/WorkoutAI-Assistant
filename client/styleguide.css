@@ -1,0 +1,37 @@
+:root {
+    --ash-gray-green: rgba(186, 191, 175, 1);
+    --black: rgba(0, 0, 0, 1);
+    --gunmetal: rgba(16, 45, 61, 1);
+    --heading-2-font-family: "Source Sans Pro", monospace;
+    --heading-2-font-size: 20px;
+    --heading-2-font-style: normal;
+    --heading-2-font-weight: 700;
+    --heading-2-letter-spacing: 0px;
+    --heading-2-line-height: normal;
+    --home-page-font-font-family: "Source Sans Pro", monospace;
+    --home-page-font-font-size: 56px;
+    --home-page-font-font-style: normal;
+    --home-page-font-font-weight: 700;
+    --home-page-font-letter-spacing: 0px;
+    --home-page-font-line-height: normal;
+    --lavender-blush: rgba(241, 228, 232, 1);
+    --moonstone: rgba(126, 174, 178, 1);
+    --moss-green: rgba(131, 154, 118, 1);
+    --orange-web: rgba(255, 173, 65, 1);
+    --paynes-gray: rgba(71, 110, 120, 1);
+    --subheading-font-family: "Hind Vadodara", sans-serif;
+    --subheading-font-size: 18px;
+    --subheading-font-style: normal;
+    --subheading-font-weight: 500;
+    --subheading-letter-spacing: 0px;
+    --subheading-line-height: normal;
+    --sunset: rgba(248, 201, 149, 1);
+    --text-font-family: "Questrial", sans-serif;
+    --text-font-size: 14px;
+    --text-font-style: normal;
+    --text-font-weight: 400;
+    --text-letter-spacing: 0px;
+    --text-line-height: normal;
+    --white: rgba(255, 255, 255, 1);
+  }
+  
