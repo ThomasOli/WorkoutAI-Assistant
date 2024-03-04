@@ -1,4 +1,4 @@
-import React from 'react'
+
 import { UserNavbar } from "./userNavbar";
 
 export const ProgressPage = () => {
@@ -7,6 +7,7 @@ export const ProgressPage = () => {
       <UserNavbar/>
       progressPage
     </div>
+
   )
 }
 

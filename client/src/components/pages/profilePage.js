@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { UserNavbar } from "./userNavbar";
 import './profilePage.css';
@@ -9,6 +10,7 @@ export const ProfilePage = () => {
       <UserNavbar/>
       {/* <p>profilePage</p> */}
     </div>
+
   )
 }
 

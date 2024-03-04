@@ -1,0 +1,366 @@
+body {
+  overflow-x: hidden;
+  overflow-y: hidden;
+  max-width: 100%;
+}
+
+* {
+  font-family: "Questrial", sans-serif;
+  margin: 0;
+  padding: 0;
+  
+}
+
+.chat-page-layout-design,
+.chat-page-layout-design * {
+  box-sizing: border-box;
+}
+
+.chat-page-layout-design {
+  background: #ffffff;
+  height: 924px;
+  position: relative;
+  margin-top: -75px;
+}
+
+.chat-page-layout-design .sidebar {
+  background: #800080;
+  border-style: solid;
+  border-color: #000000;
+  border-width: 2px;
+  width: 359px;
+  height: 924px;
+  flex: 1;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  padding-left: 20px;
+}
+
+.chat-section {
+  width: 1199px;
+  height: auto;
+  position: absolute;
+  left: 355px;
+  bottom: 0px;
+  top: 0px;
+  overflow: visible;
+}
+
+.chat-box {
+  background: #ffffff;
+  border-style: solid;
+  border-color: #000000;
+  border-width: 1px;
+  width: 768px;
+  height: 74px;
+  position: absolute;
+  left: 520px;
+  top: 754px;
+  backdrop-filter: blur(2px);
+}
+
+.identification-of-ai-section {
+  margin-top: 10px;
+  background: #d9d9d9;
+  width: 62%;
+  height: 106px;
+  position: absolute;
+  left: 520px;
+  top: 100px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.raise-the-bar-chat-icon {
+  border-radius: 50%;
+  border-style: solid;
+  border-color: #000000;
+  border-width: 1px;
+  width: 75px;
+  height: 75px;
+  position: absolute;
+  left: 531px;
+  top: 115px;
+  margin-top: 10px;
+  object-fit: cover;
+}
+
+.chat-page-title {
+  display: flex;
+  font-size: 20px;
+  font-weight: 700;
+  color: black;
+  background: #e3e3e3;
+  border-style: solid;
+  border-color: black;
+  border-width: 1.25px;
+  width: 117px;
+  height: 106px;
+  position: absolute;
+  left: 374px;
+  top: 100px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10%;
+  margin-top: 10px;
+}
+
+.user-profile-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #d9d9d9;
+  border-radius: 50%;
+  width: 130px;
+  height: 130px;
+  position: absolute;
+  left: 115px;
+  top: 123px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.user-name {
+  display: flex;
+  background: #d9d9d9;
+  border-radius: 10px;
+  width: 200px;
+  height: 50px;
+  position: absolute;
+  left: 80px;
+  top: 288px;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 2px 2px 2px rgb(32, 32, 32);
+}
+
+.menu-button-1 {
+  background: #d9d9d9;
+  border-radius: 10px;
+  width: 195px;
+  height: 55px;
+  position: absolute;
+  left: 80px;
+  top: 460px;
+}
+
+.menu-button-2 {
+  background: #d9d9d9;
+  border-radius: 10px;
+  width: 195px;
+  height: 55px;
+  position: absolute;
+  left: 80px;
+  top: 549px;
+}
+
+.menu-button-3 {
+  background: #d9d9d9;
+  border-radius: 10px;
+  width: 195px;
+  height: 55px;
+  position: absolute;
+  left: 80px;
+  top: 638px;
+}
+
+.exit-button {
+  background: #d80202;
+  border-radius: 50%;
+  border-style: solid;
+  border-color: #000000;
+  border-width: 1px;
+  width: 53px;
+  height: 53px;
+  position: absolute;
+  left: 153px;
+  top: 791px;
+  cursor: pointer;
+}
+
+.exit-button .exit-button-icon {
+  padding-top: 5px;
+}
+
+.chat-message-board {
+  background: #ffffff;
+  width: 62%;
+  height: 499px;
+  position: absolute;
+  left: 520px;
+  top: 228px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.enter-button {
+  background: #800080;
+  border-style: solid;
+  border-color: #000000;
+  border-width: 1px;
+  width: 70px;
+  height: 74px;
+  position: absolute;
+  left: 1276px;
+  top: 754px;
+  box-shadow: inset 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+}
+
+.enter-button .enter-button-icon {
+  background-color: #800080;
+  padding-top: 3px;
+  padding-left: 2px;
+  height: 50px;
+}
+
+.clear-button {
+  background: #ff0000;
+  border-style: solid;
+  border-color: #000000;
+  border-width: 1px;
+  width: 69px;
+  height: 74px;
+  position: absolute;
+  left: 1345px;
+  top: 754px;
+  box-shadow: inset 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+}
+
+.clear-button-icon {
+  background-color: #ff0202;
+  padding-top: 3px;
+  padding-left: 2px;
+  height: 50px;
+}
+
+.raise-the-bar-chat-icon-text {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 10px;
+  border-style: solid;
+  border-color: #000000;
+  border-width: 1px;
+  width: 369px;
+  height: 43px;
+  padding-left: 20px;
+  margin-top: 10px;
+  position: absolute;
+  left: 621px;
+  top: 134px;
+}
+
+.raise-the-bar {
+  color: #000000;
+  text-align: left;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  position: absolute;
+  left: 646px;
+  top: 146px;
+}
+
+.home-button {
+  color: #000000;
+  text-align: center;
+  font-family: "Hind Vadodara", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  position: absolute;
+  left: 129px;
+  top: 480px;
+  width: 30%;
+  height: 50px;
+}
+
+.plan-workout-button {
+  color: #000000;
+  text-align: center;
+  font-family: "Hind Vadodara", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  position: absolute;
+  left: 128px;
+  top: 567px;
+  width: 30%;
+  height: 50px;
+}
+
+.view-progress-button {
+  color: #000000;
+  text-align: center;
+  font-family: "Hind Vadodara", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  position: absolute;
+  left: 128px;
+  top: 656px;
+  width: 30%;
+  height: 50px;
+}
+
+.home-button,
+.plan-workout-button,
+.view-progress-button {
+  background-color: white;
+  border: 2px solid gray;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 2px 2px 2px rgb(32, 32, 32);
+}
+
+.text-box {
+  color: #808080;
+  text-align: left;
+  font-family: "Questrial", sans-serif;
+  font-size: 22px;
+  font-weight: 400;
+  position: absolute;
+  width: 740px;
+  left: 552px;
+  top: 777px;
+  margin-left: -33px;
+  margin-top: -23px;
+  padding-bottom: 24px;
+  padding-top: 23px;
+  padding-left: 10px;
+  border: 1px solid black;
+  outline: none;
+}
+
+.chat-bot-message-section {
+  background: #d9d9d9;
+  width: 360px;
+  height: 441px;
+  position: absolute;
+  left: 544px;
+  top: 252px;
+}
+
+.user-message-section {
+  background: #d9d9d9;
+  width: 360px;
+  height: 441px;
+  position: absolute;
+  left: 1059px;
+  top: 252px;
+}
+
+.overall-page {
+  background: rgba(217, 217, 217, 0);
+  width: 1531px;
+  height: 890px;
+  position: absolute;
+  left: 10px;
+  top: 18px;
+}
+
+
+
+
+
+
+
+
