@@ -5,8 +5,14 @@ import { Route, Routes } from "react-router-dom";
 import Navbar from "./components/navbar.js";
 import RecordList from "./components/recordList.js";
 import Edit from "./components/edit.js";
-import Create from "./components/create.js"
- const App = () => {
+import Create from "./components/create.js";
+import LogInScreen from "./components/pages/loginScreen.js";
+import HomeScreen from "./components/pages/home.js";
+import ChatPage from "./components/pages/chatPage.js";
+import ProgressPage from "./components/pages/progressPage.js";
+import ProfilePage from "./components/pages/profilePage.js";
+
+const App = () => {
  return (
    <div>
      <Navbar />
@@ -14,6 +20,11 @@ import Create from "./components/create.js"
        <Route exact path="/" element={<RecordList />} />
        <Route path="/edit/:id" element={<Edit />} />
        <Route path="/create" element={<Create />} />
+       <Route path="/login" element={<LogInScreen />}/>
+       <Route path="/chat/:id" element={<ChatPage />}/>
+       <Route path="/progress/:id" element={<ProgressPage />}/>
+       <Route path="/profile/:id" element={<ProfilePage />}/>
+       <Route path="/home/:id" element={<HomeScreen />}/>
      </Routes>
    </div>
  );

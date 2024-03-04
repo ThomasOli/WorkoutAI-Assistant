@@ -1,0 +1,336 @@
+.log-in-screen {
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .log-in-screen .overlap-wrapper {
+    background-color: #ffffff;
+    height: 1024px;
+    width: 100%;
+  }
+  
+  .log-in-screen .overlap {
+    height: 777px;
+    position: relative;
+  }
+  
+  .log-in-screen .overlap-group {
+    height: 777px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
+  
+  .log-in-screen .color-block-frame {
+    height: 458px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
+  
+  .log-in-screen .sign-in-title {
+    height: 220px;
+    left: 73px;
+    position: absolute;
+    top: 141px;
+    width: 551px;
+  }
+  
+  .log-in-screen .p {
+    color: #ffffff;
+    font-family: "Questrial", sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    left: 7px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 124px;
+    width: 394px;
+  }
+  
+  .log-in-screen .sign-in-to {
+    height: 123px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 400px;
+  }
+  
+  .log-in-screen .overlap-group-2 {
+    height: 123px;
+    position: relative;
+    width: 549px;
+  }
+  
+  .log-in-screen .text-wrapper-6 {
+    color: #ffffff;
+    font-family: "Hind Vadodara", sans-serif;
+    font-size: 40px;
+    font-weight: 400;
+    left: 0;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 0;
+  }
+  
+  .log-in-screen .text-wrapper-7 {
+    color: #ffffff;
+    font-family: "Source Sans Pro-Bold", monospace;
+    font-size: 60px;
+    font-weight: 700;
+    left: 0;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 48px;
+    width: 549px;
+  }
+  
+  .log-in-screen .register-here-text {
+    height: 56px;
+    left: 80px;
+    position: absolute;
+    top: 351px;
+    width: 361px;
+  }
+  
+  .log-in-screen .overlap-2 {
+    height: 56px;
+    position: relative;
+    width: 357px;
+  }
+  
+  .log-in-screen .text-wrapper-8 {
+    color: #ffffff;
+    font-family: "Hind Vadodara", sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    left: 0;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 0;
+    width: 357px;
+  }
+  
+  .log-in-screen .you-can-register {
+    color: #ffffff;
+    font-family: "Hind Vadodara", sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    left: 0;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 26px;
+    width: 308px;
+  }
+  
+  .log-in-screen .span {
+    color: #ffffff;
+    font-family: "Hind Vadodara", sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+  
+  .log-in-screen .text-wrapper-9 {
+    font-family: "Hind Vadodara", sans-serif;
+    font-weight: 700;
+  }
+  
+  .log-in-screen .log-in-card {
+    background-color: #ffffff;
+    border-radius: 40px;
+    box-shadow: 0px 4px 35px #00000014;
+    height: 627px;
+    left: 700px;
+    position: absolute;
+    top: 150px;
+    width: 500px;
+    color:#ffffff;
+  }
+  
+  .log-in-screen .overlap-3 {
+    height: 102px;
+    left: 44px;
+    position: absolute;
+    top: 43px;
+    width: 290px;
+  }
+  
+  .log-in-screen .welcome-to-app {
+    color: transparent;
+    font-family: "Hind Vadodara", sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+    left: 0;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 0;
+  }
+  
+  .log-in-screen .text-wrapper-10 {
+    color: #000000;
+    font-weight: 500;
+  }
+  
+  .log-in-screen .text-wrapper-11 {
+    color: #476e78;
+    font-family: "Hind Vadodara-Bold", sans-serif;
+    font-weight: 700;
+  }
+  
+  .log-in-screen .text-wrapper-12 {
+    color: #000000;
+    font-family: "Source Sans Pro-SemiBold", monospace;
+    font-size: 55px;
+    font-weight: 600;
+    left: 0;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 60px;
+  }
+  
+  .log-in-screen .email-address-input {
+    height: 91px;
+    left: 44px;
+    position: absolute;
+    top: 204px;
+    width: 453px;
+  }
+  
+  .log-in-screen .text-wrapper-13 {
+    color: #000000;
+    font-family: "Questrial", sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    left: 0;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 0;
+    white-space: nowrap;
+  }
+  
+  .log-in-screen .overlap-group-wrapper {
+    height: 57px;
+    left: 0;
+    position: absolute;
+    top: 34px;
+    width: 453px;
+  }
+  
+  .log-in-screen .div-wrapper {
+    background-color: var(--white);
+    border-radius: 9px;
+    height: 57px;
+    position: relative;
+    width: 451px;
+  }
+  
+  .log-in-screen .text-wrapper-14 {
+    color: #6c6c6c;
+    font-family: "Questrial", sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    left: 24px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 18px;
+    white-space: nowrap;
+  }
+  
+  .log-in-screen .password-input {
+    height: 91px;
+    left: 44px;
+    position: absolute;
+    top: 331px;
+    width: 453px;
+  }
+  
+  .log-in-screen .design-component-instance-node {
+    background-color: var(--paynes-gray) !important;
+    left: 44px !important;
+    position: absolute !important;
+    top: 516px !important;
+  }
+  
+  .log-in-screen .sign-in-button-2 {
+    color: var(--white) !important;
+    font-family: "Source Sans Pro-Bold", monospace !important;
+    font-weight: 700 !important;
+  }
+  
+  .log-in-screen .forgot-password-instance {
+    left: 387px !important;
+    position: absolute !important;
+    top: 437px !important;
+  }
+  
+  .log-in-screen .forgot-password-2 {
+    font-family: "Questrial", sans-serif !important;
+  }
+  
+  .log-in-screen .top-nav-bar-instance {
+    left: 1167px !important;
+    position: absolute !important;
+    top: 27px !important;
+  }
+  
+  .log-in-screen .top-nav-bar-2 {
+    font-family: "Source Sans Pro-Bold", monospace !important;
+  }
+  
+  .log-in-screen .logo-instance {
+    height: 100px !important;
+    left: 10px !important;
+    position: absolute !important;
+    top: 3px !important;
+    width: 100px !important;
+  }
+  
+  .log-in-screen .about-section {
+    height: 181px;
+    left: 79px;
+    position: absolute;
+    top: 500px;
+    width: 371px;
+  }
+  
+  .log-in-screen .text-wrapper-15 {
+    color: #000000;
+    font-family: "Source Sans Pro-Bold", monospace;
+    font-size: 40px;
+    font-weight: 700;
+    left: 0;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 0;
+    width: 205px;
+  }
+  
+  .log-in-screen .text-wrapper-16 {
+    color: #000000;
+    font-family: "Hind Vadodara", sans-serif;
+    font-size: 20px;
+    font-weight: 300;
+    left: 1px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 59px;
+    width: 366px;
+  }
+  
