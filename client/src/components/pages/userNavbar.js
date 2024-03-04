@@ -51,7 +51,7 @@ export const UserNavbar = (props) => {
 
   return (
     <Box sx={{ display: 'flex', backgroundColor: '#102d3d' }}>
-      <AppBar component="nav" sx={{backgroundColor: '#102d3d'}}>
+      <AppBar component="nav" sx={{backgroundColor: '#102d3d'}} position='fixed'>
         <Toolbar>
           <IconButton
             color="inherit"
