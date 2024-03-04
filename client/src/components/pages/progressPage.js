@@ -1,4 +1,4 @@
-import React from 'react'
+
 import { UserNavbar } from "./userNavbar";
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
@@ -66,6 +66,7 @@ export const ProgressPage = () => {
           </CustomTabPanel>
         </div>   
     </div>
+
   )
 }
 
