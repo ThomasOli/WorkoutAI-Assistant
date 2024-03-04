@@ -318,7 +318,9 @@
     line-height: normal;
     position: absolute;
     top: 0;
-    width: 205px;
+
+    width: 450px;
+
   }
   
   .log-in-screen .text-wrapper-16 {
@@ -331,6 +333,8 @@
     line-height: normal;
     position: absolute;
     top: 59px;
-    width: 366px;
+
+    width: 500px;
+
   }
   

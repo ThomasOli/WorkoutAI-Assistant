@@ -1,8 +1,13 @@
-import React from 'react'
+
+import { UserNavbar } from "./userNavbar";
 
 export const ProgressPage = () => {
   return (
-    <div>progressPage</div>
+    <div>
+      <UserNavbar/>
+      progressPage
+    </div>
+
   )
 }
 
