@@ -9,7 +9,8 @@ const WorkoutSchema = new mongoose.Schema({
     reps: { type: Number, required: true },
     weight: { type: Number },
   }],
-  notes: String
+  notes: String,
+  completed: { type: Boolean, default: false } // New field indicating if the workout is completed
 }, { timestamps: true });
 
 module.exports = mongoose.model('Workout', WorkoutSchema);
