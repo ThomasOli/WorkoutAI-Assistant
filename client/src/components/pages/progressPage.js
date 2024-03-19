@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
 import { UserNavbar } from "./userNavbar";
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -15,7 +15,12 @@ import { IconButton } from "@mui/material";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 import './progressPage.css'
+// import { set } from "mongoose";
 
 export const ProgressPage = () => {
   const [value, setValue] = React.useState(0);
@@ -23,7 +28,12 @@ export const ProgressPage = () => {
     {
       workoutName: 'Workout 1',
       exercises: ['Exercise A', 'Exercise B', 'Exercise C'],
-      timeRep: [30, 15, 45],  // representing time in seconds or reps per exercise
+      timeRep: [30, 15, '45 seconds'],  // representing time in seconds or reps per exercise
+      sets: [3, 3, 3], // number of times you repeat the workout
+      weightRec: ['30%', '50%', 'no weight'],
+      type: ['strength', 'core', 'cardio'],
+      dateCreated: '03/18/2024',
+      dateUpdated: '03/18/2024',
       checked: [false, false, false],  // status for each exercise
       isFavorite: false,
     },
@@ -31,13 +41,23 @@ export const ProgressPage = () => {
       workoutName: 'Workout 2',
       exercises: ['Exercise X', 'Exercise Y', 'Exercise Z'],
       timeRep: [60, 12, 30],  // representing time in seconds or reps per exercise
+      sets: [3, 3, 3], // number of times you repeat the workout
+      weightRec: ['30%', '50%', 'no weight'],
+      type: ['strength', 'core', 'cardio'],
+      dateCreated: '03/18/2024',
+      dateUpdated: '03/18/2024',
       checked: [false, false, false],  // status for each exercise
       isFavorite: false,
     },
     {
       workoutName: 'Workout 3',
       exercises: ['Exercise S', 'Exercise T', 'Exercise R'],
-      timeRep: [3, 1, 1/2],  // representing time in seconds or reps per exercise
+      timeRep: [3, 1, '30 seconds'],  // representing time in seconds or reps per exercise
+      sets: [3, 3, 3], // number of times you repeat the workout
+      weightRec: ['30%', '50%', 'no weight'],
+      type: ['strength', 'core', 'cardio'],
+      dateCreated: '03/18/2024',
+      dateUpdated: '03/18/2024',
       checked: [false, false, false],  // status for each exercise
       isFavorite: false,
     }
@@ -52,7 +72,7 @@ export const ProgressPage = () => {
 
   const handleCheckboxChange = (taskName, index) => {
     const updatedTasks = tasks.map((task) =>
-      task.workoutName === taskName ? { ...task, checked: [...task.checked.slice(0, index), !task.checked[index], ...task.checked.slice(index + 1)] } : task
+      task.workoutName === taskName ? { ...task, dateUpdated: new Date(), checked: [...task.checked.slice(0, index), !task.checked[index], ...task.checked.slice(index + 1)] } : task
     );
 
     setTasks(updatedTasks);
@@ -84,26 +104,58 @@ export const ProgressPage = () => {
         setFavoriteTasks(favoriteTasks.filter((task) => task.workoutName !== taskName));
       }
   };
-  
+
+  // used for copying tasks
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [newWorkoutName, setNewWorkoutName] = useState('');
+  const [targetTab, setTargetTab] = useState([]);
+  const [ogWorkoutName, setOgWorkoutName] = useState('');
+
   const handleCopyTask = (targetTab, taskName) => {
-    // Check if the task is already in the In Progress tab
-    const isInProgress = tasks.some((task) => task.workoutName === taskName);
-    if (!isInProgress) {
-      // Find the task in the Completed or Favorites tab
-      const sourceTab = targetTab === 'completed' ? completedTasks : favoriteTasks;
-      const taskToCopy = sourceTab.find((task) => task.workoutName === taskName);
-      // Check if the task to copy is not undefined
-      if (taskToCopy) {
-        // If the task is from the Completed tab, remove it from the Completed tab
-        if (targetTab === 'completed') {
-          const updatedCompletedTasks = completedTasks.filter((task) => task.workoutName !== taskName);
-          setCompletedTasks(updatedCompletedTasks);
-        }
-        // Add the task to the In Progress tab
-        setTasks([...tasks, { ...taskToCopy, checked: taskToCopy.checked.map(() => false) }]);
-      }
-    }
+    const defaultName = `${taskName} (Copy)`;
+    // Open the dialog when the copy icon is clicked
+    setDialogOpen(true);
+    setOgWorkoutName(taskName);
+    setTargetTab(targetTab);
+    console.log('Dialog Open Before Setting Name: ', dialogOpen);
+    // Set the default value for the new workout name
+    setNewWorkoutName(defaultName); // Default value example
+    console.log('Dialog Open After Setting Name: ', dialogOpen);
+    console.log('In copy function', newWorkoutName);
   };
+
+  // Function to handle dialog close
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+  };
+
+  // Function to handle workout name change
+  const handleChangeWorkoutName = (event) => {
+    setNewWorkoutName(event.target.value);
+  };
+
+  // Function to handle submitting the new workout name
+  const handleSubmitNewWorkoutName = () => {
+    // Do something with the new workout name
+    // For example, update the workout name in the state or perform any other action
+    console.log('New workout name:', newWorkoutName);
+    // Close the dialog
+    setDialogOpen(false);
+  };
+
+  useEffect(() => {
+    if(!dialogOpen && newWorkoutName !== '') {
+      const taskToCopy = targetTab.find((task) => task.workoutName === ogWorkoutName);
+      // updating the in progress tasks
+      // copied task progress is reset and is not a favorite
+      if(taskToCopy) { // ensures taskToCopy is not empty
+        const copied = { ...taskToCopy, workoutName: newWorkoutName, checked: taskToCopy.checked.map(() => false), isFavorite: false };
+        setTasks([...tasks, copied]);
+      }
+      // resets newWorkoutName to avoid infinite loops
+      setNewWorkoutName('');
+    }
+  }, [dialogOpen, newWorkoutName, ogWorkoutName, targetTab, tasks]);
 
   return (
     <div className='progress-screen'>
@@ -127,7 +179,7 @@ export const ProgressPage = () => {
                     </IconButton>
                     <Typography>{task.workoutName}</Typography>
                   </div>
-                  <IconButton onClick={() => handleCopyTask('inProgress', task.workoutName)}>
+                  <IconButton onClick={() => handleCopyTask(tasks, task.workoutName)}>
                     <FileCopyIcon />
                   </IconButton>
                 </AccordionSummary>
@@ -135,9 +187,12 @@ export const ProgressPage = () => {
                   <table>
                     <thead>
                       <tr>
-                        <th style={{width: '40%'}}>Progress</th>
-                        <th style={{width: '40%'}}>Exercise</th>
-                        <th style={{width: '40%'}}>Number of Reps/Time</th>
+                        <th style={{width: '10%'}}>Progress</th>
+                        <th style={{width: '25%'}}>Exercise</th>
+                        <th style={{width: '15%'}}>Reps/Time</th>
+                        <th style={{width: '15%'}}>Sets</th>
+                        <th style={{width: '30%'}}>Weight Recommendation</th>
+                        <th style={{width: '30%'}}>Type</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -156,6 +211,9 @@ export const ProgressPage = () => {
                           </td>
                           <td>{task.exercises[index]}</td>
                           <td>{task.timeRep[index]}</td>
+                          <td>{task.sets[index]}</td>
+                          <td>{task.weightRec[index]}</td>
+                          <td>{task.type[index]}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -174,7 +232,7 @@ export const ProgressPage = () => {
                         </IconButton>
                       <Typography>{completedTask.workoutName}</Typography>
                     </div>
-                    <IconButton onClick={() => handleCopyTask('completed', completedTask.workoutName)}>
+                    <IconButton onClick={() => handleCopyTask(completedTasks, completedTask.workoutName)}>
                       <FileCopyIcon />
                   </IconButton>
                   </AccordionSummary>
@@ -209,7 +267,7 @@ export const ProgressPage = () => {
                       </IconButton>
                       <Typography>{favoriteTask.workoutName}</Typography>
                     </div>
-                    <IconButton onClick={() => handleCopyTask('favorite', favoriteTask.workoutName)}>
+                    <IconButton onClick={() => handleCopyTask(favoriteTasks, favoriteTask.workoutName)}>
                       <FileCopyIcon />
                     </IconButton>
                   </AccordionSummary>
@@ -236,8 +294,22 @@ export const ProgressPage = () => {
             </Typography>
           </Box>
         </div>   
+        {/* Add a dialog for changing the workout name */}
+        <Dialog open={dialogOpen} onClose={handleCloseDialog}>
+          <DialogTitle>Change Workout Name</DialogTitle>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="new-workout-name"
+            label="New Workout Name"
+            type="text"
+            fullWidth
+            value={newWorkoutName}
+            onChange={handleChangeWorkoutName}
+          />
+          <Button onClick={handleSubmitNewWorkoutName}>Save</Button>
+        </Dialog>
     </div>
-
   )
 }
 
