@@ -110,6 +110,7 @@ export const ProgressPage = () => {
   const [newWorkoutName, setNewWorkoutName] = useState('');
   const [targetTab, setTargetTab] = useState([]);
   const [ogWorkoutName, setOgWorkoutName] = useState('');
+  const [dialogSubmit, setDialogSubmit] = useState(false); // ensures the save button is clicked
 
   const handleCopyTask = (targetTab, taskName) => {
     const defaultName = `${taskName} (Copy)`;
@@ -141,10 +142,11 @@ export const ProgressPage = () => {
     console.log('New workout name:', newWorkoutName);
     // Close the dialog
     setDialogOpen(false);
+    setDialogSubmit(true); // ensures that user clicked save
   };
 
   useEffect(() => {
-    if(!dialogOpen && newWorkoutName !== '') {
+    if(!dialogOpen && dialogSubmit && newWorkoutName !== '') {
       const taskToCopy = targetTab.find((task) => task.workoutName === ogWorkoutName);
       // updating the in progress tasks
       // copied task progress is reset and is not a favorite
@@ -154,8 +156,9 @@ export const ProgressPage = () => {
       }
       // resets newWorkoutName to avoid infinite loops
       setNewWorkoutName('');
+      setDialogSubmit(false);
     }
-  }, [dialogOpen, newWorkoutName, ogWorkoutName, targetTab, tasks]);
+  }, [dialogOpen, dialogSubmit, newWorkoutName, ogWorkoutName, targetTab, tasks]);
 
   return (
     <div className='progress-screen'>

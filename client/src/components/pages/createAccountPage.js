@@ -36,22 +36,22 @@ export const CreateAccountPage = () => {
     const id = 1;
     navigate('/home/:' + id);
   };
-  const [formValid, setFormValid] = useState(false);
-  const checkFormValidity = () => {
-    // Check if all required fields are filled out
-    const fieldsFilled = firstName !== '' && lastName !== '' && email.trim() !== '' && password !== '' && confirmPass !== '';
+  // const [formValid, setFormValid] = useState(false);
+  // const checkFormValidity = () => {
+  //   // Check if all required fields are filled out
+  //   const fieldsFilled = firstName !== '' && lastName !== '' && email.trim() !== '' && password !== '' && confirmPass !== '';
 
-    // Check if passwords match
-    const passwordsMatch = password === confirmPass;
+  //   // Check if passwords match
+  //   const passwordsMatch = password === confirmPass;
 
-    // Set the overall form validity
-    setFormValid(fieldsFilled && passwordsMatch);
-  };
+  //   // Set the overall form validity
+  //   setFormValid(fieldsFilled && passwordsMatch);
+  // };
 
-  // Update form validity whenever any input changes
-  React.useEffect(() => {
-    checkFormValidity();
-  }, [firstName, lastName, email, password, confirmPass]);
+  // // Update form validity whenever any input changes
+  // React.useEffect(() => {
+  //   checkFormValidity();
+  // }, [firstName, lastName, email, password, confirmPass]);
 
   return (
     <div className="register-account">
@@ -107,8 +107,7 @@ export const CreateAccountPage = () => {
                 left: '48px', 
                 fontFamily: 'Source Sans Pro, monospace', 
                 textTransform: 'none'}}
-                onClick={handleCreateAccount}
-                disabled={!formValid}>
+                onClick={handleCreateAccount}>
                   Sign Up
         </Button>
       </div>
