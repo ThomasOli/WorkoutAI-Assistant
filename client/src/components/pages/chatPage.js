@@ -18,7 +18,9 @@ export const ChatPage = () => {
   // initially set user input content to an empty string
   const [userTextInput, setUserTextInput] = useState("");
   // create another useState for the send request to GPT-4 API
-  const [textFromGPT, setTextFromGPT] = useState("");
+  // const [textFromGPT, setTextFromGPT] = useState("");
+  // useState for modifying user messages and bot responses
+  const [msgs, setMsg] = useState([]);
 
   // update text box contents as user enters or removes text
   function updateInputField(e) {
@@ -45,17 +47,53 @@ export const ChatPage = () => {
   }
 
   // user input is stored in userTextInput variable
-
   // function to receive response by API
-  function sendText() {
-    textFromGPT = await fetch(/*link, {method: , headers: , body: ,}*/);
-    
+  const sendText = async () => {
+    // fill in missing parameters
+    const apiKey = "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";
+    // display user input for testing purposes
+    console.log("You said: ", userTextInput);
+    const textFromGPT = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization" : "Bearer " + apiKey,
+        "Content-Type" : "application/json",
+      },
+        /* give this to me in this format; if the question is not about exercises, say so */
+      body: JSON.stringify({
+        model: "gpt-3.5-turbo",
+        // prompt: userTextInput + "Give the response to me in the format of: Exercise, Reps, Weights (if applicable), Time, Intensity. If this question is not about exercise, say that you are unable to provide assistance in this area.",
+        messages: [
+          {role: "user", content: "Give me the relevant workout routines"}, 
+          {role: "assistant", content: "Of course! Here is a curated workout routine for you,"},
+        ]
+      }),
+    })
+    let GPTResponseData = await textFromGPT.json();
+    // let GPTResponse = GPTResponseData.choices[0].text;
+    let GPTResponse = GPTResponseData.choices[0].message.content;
 
+    // display bot response to the console for testing purposes
+    console.log("ChatGPT said: ", GPTResponse);
+    setMsg([
+      ...msgs, 
+      {text: userTextInput, sender: "User"}, 
+      {text: GPTResponse, sender: "ChatGPT"}
+    ]);
+    // test output of msgs array
+    console.log(msgs[0]);  
+    console.log(msgs[1]);
+    // console.log(setMsg[0]);
+    // console.log(setMsg[1]); 
     // reset the underlying contents of the text box
     setUserTextInput("");
   }
-
   
+
+  /* create functions for placing user and bot messages in chat bubbles
+     in the chat box. */
+
+
 
   return (
     <>
@@ -68,7 +106,7 @@ export const ChatPage = () => {
           <Button className="home-button">Home</Button>
           <Button className="plan-workout-button">Plan a Workout</Button>
           <Button className="view-progress-button">View Progress</Button>
-          <Button className="exit-button"><img className="exit-button-icon" src={exit}></img></Button>
+          <Button className="exit-button"><img className="exit-button-icon" alt="Exit" src={exit}></img></Button>
         </div>
         <svg
           class="chat-section"
@@ -86,14 +124,22 @@ export const ChatPage = () => {
           />
         </svg>
         <div className="identification-of-ai-section"></div>
-        <img className="raise-the-bar-chat-icon" src={logo}></img>
+        <img className="raise-the-bar-chat-icon" alt="Chat Icon" src={logo}></img>
         <div className="chat-page-title">CHAT</div>
-        <div className="chat-message-board"></div>
+        <div className="chat-message-board">
+
+          {/* {msgs.map((msg, index) => (
+            <div key={index} className={`message ${msg.sender}`}>
+              {msg.text}
+            </div>
+          ))} */}
+
+        </div>
         <Button className="enter-button" onClick={ifEnterButtonPressed}>
-          <img className="enter-button-icon" src={send}></img>
+          <img className="enter-button-icon" alt="Enter" src={send}></img>
         </Button>
         <Button className="clear-button" onClick={ifClearButtonPressed}>
-          <img className="clear-button-icon" src={clear}></img>
+          <img className="clear-button-icon" alt="Clear" src={clear}></img>
         </Button>
         <div className="raise-the-bar-chat-icon-text">Raise the Bar</div>
         <input className="text-box" 
@@ -101,12 +147,12 @@ export const ChatPage = () => {
           placeholder="Begin your fitness journey..." 
           value={userTextInput} 
           onKeyDown={ifEnterKeyPressed} 
-          onChange={updateInputField}></input>
+          onChange={updateInputField}/>
       </div>
     </>
   );
-
+};
   
     /*<div>chatPage</div>*/
 
-export default ChatPage
+export default ChatPage;
