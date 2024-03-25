@@ -1,13 +1,32 @@
-import React from "react";
+import React, {useState} from "react";
 
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import "./loginScreen.css";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { Link} from "react-router-dom";
 
 import glassFrameBackground from '../images/glassFrameBackground.png'
 
 export const LogInScreen = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+  };
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+  };
+  const navigate = useNavigate();
+  const handleSignIn = () => {
+    // console.log(email);
+    // console.log(password);
+    // search database for email then passowrd, if both valid then link to specifc user page
+    const id = 1;
+    
+    navigate('/home/:' + id);
+  };
+
   return (
     <div className="log-in-screen">
       <div className="overlap-wrapper">
@@ -60,7 +79,10 @@ export const LogInScreen = () => {
                 <div className="overlap-group-wrapper">
                   <div className="div-wrapper">
                     {/* Email text field */}
-                    <TextField id="outlined-basic" label="Email" variant="outlined" style={{width: '425px', fontFamily: 'Questrial, sans-serif', textTransform: 'none'}}/>
+                    <TextField id="outlined-basic" label="Email" variant="outlined" 
+                      style={{width: '425px', fontFamily: 'Questrial, sans-serif', textTransform: 'none'}}
+                      value={email}
+                      onChange={handleEmailChange}/>
                   </div>
                 </div>
               </div>
@@ -69,7 +91,10 @@ export const LogInScreen = () => {
                 <div className="overlap-group-wrapper">
                   <div className="div-wrapper">
                     {/* Password text field */}
-                    <TextField id="outlined-basic" label="Password" variant="outlined" style={{width: '425px', fontFamily: 'Questrial, sans-serif', textTransform: 'none'}} />
+                    <TextField id="outlined-basic" label="Password" variant="outlined" 
+                      style={{width: '425px', fontFamily: 'Questrial, sans-serif', textTransform: 'none'}}
+                      value={password}
+                      onChange={handlePasswordChange}/>
                   </div>
                 </div>
               </div>
@@ -93,7 +118,8 @@ export const LogInScreen = () => {
                 left: '30px', 
                 fontFamily: 'Source Sans Pro, monospace', 
                 textTransform: 'none'}} 
-                component={Link} to='/home/:id'>
+                onClick={handleSignIn}
+                >
                   Sign In
               </Button>
             </div>
