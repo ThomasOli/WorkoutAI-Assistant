@@ -24,4 +24,4 @@ yarn-debug.log*
 yarn-error.log*
 
 # file containing api key
-client/src/components/config2.js
+src/components/config2.js
