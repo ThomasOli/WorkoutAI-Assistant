@@ -1,16 +1,16 @@
 const mongoose = require('mongoose');
 
+const ExerciseSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  timeRep: [Number], 
+  checked: [Boolean]
+});
+
 const WorkoutSchema = new mongoose.Schema({
-  userId: { type: String, required: true },
-  date: { type: Date, required: true },
-  exercises: [{
-    name: { type: String, required: true },
-    sets: { type: Number, required: true },
-    reps: { type: Number, required: true },
-    weight: { type: Number },
-  }],
-  notes: String,
-  completed: { type: Boolean, default: false } // New field indicating if the workout is completed
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  workoutName: { type: String, required: true },
+  exercises: [ExerciseSchema],
+  isFavorite: { type: Boolean, default: false }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Workout', WorkoutSchema);
