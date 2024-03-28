@@ -6,7 +6,12 @@ import logo from "../images/raisethebarLogo.png";
 import exit from "../images/exitButtonSymbol.png";
 import send from "../images/sendMessage.png";
 import clear from "../images/deleteTextContents.png";
+import { Link } from "react-router-dom";
 import { useState } from "react";
+
+import { API_KEY } from "../config2.js";
+// require('dotenv').config({ path: "./config.env" });
+
 
 
 /*import { TextField } from '@mui/material';*/
@@ -51,13 +56,18 @@ export const ChatPage = () => {
   // function to receive response by API
   const sendText = async () => {
     // fill in missing parameters
-    const apiKey = "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";
     // display user input for testing purposes
     console.log("You said: ", userTextInput);
+    // obtain api key from environment
+    // const apiKey = "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";
+    // const apiKey = process.env.API_KEY;
+    // console.log(apiKey);
+    // console.log(API_KEY);
+
     const textFromGPT = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
-        "Authorization" : "Bearer " + apiKey,
+        "Authorization" : "Bearer " + API_KEY,
         "Content-Type" : "application/json",
       },
         /* give this to me in this format; if the question is not about exercises, say so */
@@ -104,10 +114,18 @@ export const ChatPage = () => {
           <div className="user-name">
             FirstName LastName
           </div>
-          <Button className="home-button">Home</Button>
+          <Button className="home-button" 
+            component={Link} to='/home/:id'>
+              Home
+          </Button>
           <Button className="plan-workout-button">Plan a Workout</Button>
-          <Button className="view-progress-button">View Progress</Button>
-          <Button className="exit-button"><img className="exit-button-icon" alt="Exit" src={exit}></img></Button>
+          <Button className="view-progress-button" 
+            component={Link} to="/progress/:id">
+              View Progress
+          </Button>
+          <Button className="exit-button">
+            <img className="exit-button-icon" alt="Exit" src={exit}></img>
+          </Button>
         </div>
         <svg
           class="chat-section"
@@ -128,13 +146,19 @@ export const ChatPage = () => {
         <img className="raise-the-bar-chat-icon" alt="Chat Icon" src={logo}></img>
         <div className="chat-page-title">CHAT</div>
         <div className="chat-message-board">
-
-          {/* {msgs.map((msg, index) => (
-            <div key={index} className={`message ${msg.sender}`}>
-              {msg.text}
-            </div>
-          ))} */}
-
+          <div className="chat-messages-section">
+            {/* {msgs.map((msg, index) => (
+              <div key={index} className={`message ${msg.sender}`}>
+                {msg.text}
+              </div>
+            ))} */}
+            <div className="messenger-icon"></div>
+            {msgs.map((msg, index) => (
+              <div key={index} className={`message ${msg.sender}`}>
+                {msg.text}
+              </div>
+            ))}
+          </div>
         </div>
         <Button className="enter-button" onClick={ifEnterButtonPressed}>
           <img className="enter-button-icon" alt="Enter" src={send}></img>
