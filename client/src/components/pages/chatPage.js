@@ -59,7 +59,6 @@ export const ChatPage = () => {
     // display user input for testing purposes
     console.log("You said: ", userTextInput);
     // obtain api key from environment
-    // const apiKey = "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";
     // const apiKey = process.env.API_KEY;
     // console.log(apiKey);
     // console.log(API_KEY);
