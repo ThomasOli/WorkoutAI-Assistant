@@ -17,8 +17,6 @@ const dbo = require("./db/conn");
 // Adjust the route to include password hashing
 
 // passport.use(new GoogleStrategy({
-//   clientID: '434264571626-bcvfo0ftpcjollu8b8e9vlbecsn8pub8.apps.googleusercontent.com',
-//   clientSecret: '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', 
 //   callbackURL: '/auth/google/callback'
 // },
 //   (accessToken, refreshToken, profile, done) => {
