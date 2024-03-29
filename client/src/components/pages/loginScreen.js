@@ -1,15 +1,21 @@
 import React, { useState } from "react";
 import axios from "axios";
+
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { useNavigate, Link } from "react-router-dom";
 import "./loginScreen.css";
+
+import { useNavigate } from "react-router-dom";
+import { Link} from "react-router-dom";
+
 
 import glassFrameBackground from '../images/glassFrameBackground.png'
 
 export const LogInScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
@@ -23,6 +29,7 @@ export const LogInScreen = () => {
     } catch (error) {
       setErrorMessage('Incorrect Combination, Please Try Again');
     }
+
   };
 
   return (
@@ -45,6 +52,8 @@ export const LogInScreen = () => {
                 <p className="text-wrapper-8">If you don’t have an account register</p>
                 <p className="you-can-register">
                   <span className="span">You can</span>
+
+
                   <Button variant='text' style={{
                     fontFamily: 'Hind Vadodara, sans-serif', 
                     textTransform: 'none', 
@@ -61,6 +70,7 @@ export const LogInScreen = () => {
               </div>
             </div>
             <div className="log-in-card">
+
               <form onSubmit={handleLogin}>
                 <div className="overlap-3">
                   <p className="welcome-to-app">
@@ -108,8 +118,16 @@ export const LogInScreen = () => {
               </form>
             </div>
           </div>
+       
           <div className="about-section">
-            {/* About section content */}
+            <div className="text-wrapper-15">About Raise the Bar</div>
+            <div className="text-wrapper-16">
+              Finding the right workout plan can be tough. There is an intimidatingly large number of resources, for new and experienced gym goers alike, to parse through to find a suitable workout. And even with that, it is not always clear which workout routines are better than others, or which ones are better suited to your needs. <br/> <br/>
+              Not only is there difficulty in finding the right workout routines, but it can also prove difficult—or tedious—to track the workouts that you’ve completed in the past and keep note of any personal records that you may have achieved in certain sessions. Having to use a pencil and paper, or a notes app on mobile phones, to notate this seems behind the times in our technological age.
+              <br/> <br/>
+              Raise the bar is web-based training application that uses generative AI to provide users with immediate, customized workout routines depending on their specifications. Raise the Bar distinguishes itself from other workout applications (in three distinct ways) by including an interactive user interface that enables users to check off exercises as they are completed, different routines catered to users depending on how often they expect to work out, and a user profile that tracks workout progress. This all comes together to create a satisfying workout experience for gym enthusiasts, who no longer need to search through numerous sources to find a desirable exercise routine, and no longer need to use non-digital, or inefficient means, to try and keep track of their workouts.
+            </div>
+
           </div>
         </div>
       </div>

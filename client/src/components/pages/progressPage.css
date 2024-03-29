@@ -7,13 +7,18 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 900px;
-    width: auto;
+    position: relative;
+    min-height: 100vh;
+    overflow: auto;
+    z-index: 0;
+    /* width: auto; */
 }
 
 .progress-screen .overlay-background {
-    background-color: #ffffff;
-    height: 100vh;
+    background-color: #F1E4E8;
+    position: absolute;
+    margin-top: 96px;
+    height: fit-content;
     width: 90vw;
     top: 0px;
     left: 50px;
