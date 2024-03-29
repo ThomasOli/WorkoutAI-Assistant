@@ -1,6 +1,3 @@
-
-
-
 const passport = require('passport');
 const session = require('express-session');
 require('dotenv').config({ path: './config.env' });
@@ -54,7 +51,6 @@ app.get('/logout', (req, res) => {
 // Connect to MongoDB with Mongoose
 mongoose.connect(process.env.ATLAS_URI)
   .then(() => {
-    console.log('Successfully connected to MongoDB.');
     
     // Mount workoutRoutes to the '/api/workouts' base path
     app.use('/api/workouts', workoutRoutes);
@@ -65,7 +61,12 @@ mongoose.connect(process.env.ATLAS_URI)
     app.use('/api/workouts', scheduledWorkoutRoutes);
 
     // Start listening for requests after a successful database connection
-    app.listen(port, () => console.log(`Server running on port ${port}`));
+    app.listen(port, () => {
+      dbo.connectToServer(function (err) {
+        if (err) console.error(err);
+      });
+      console.log(`Server is running on port: ${port}`);
+    });
   })
   .catch(err => {
     console.error('Connection error', err.message);

@@ -5,17 +5,11 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { useNavigate, Link } from "react-router-dom";
 import "./loginScreen.css";
-
-import { useNavigate } from "react-router-dom";
-import { Link} from "react-router-dom";
-
-
 import glassFrameBackground from '../images/glassFrameBackground.png'
 
 export const LogInScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
@@ -25,7 +19,7 @@ export const LogInScreen = () => {
       
       const res = await axios.post('http://localhost:5000/login', { email, password });
       console.log(res.data);
-      navigate('/dashboard'); // Adjust as necessary
+      navigate('/home/:1'); // Adjust as necessary
     } catch (error) {
       setErrorMessage('Incorrect Combination, Please Try Again');
     }
