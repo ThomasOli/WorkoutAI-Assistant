@@ -11,7 +11,7 @@ import { useState } from "react";
 
 import { API_KEY } from "../config2.js";
 // require('dotenv').config({ path: "./config.env" });
-
+// const apiKey = process.env.API_KEY;
 
 
 /*import { TextField } from '@mui/material';*/
@@ -59,7 +59,6 @@ export const ChatPage = () => {
     // display user input for testing purposes
     console.log("You said: ", userTextInput);
     // obtain api key from environment
-    // const apiKey = process.env.API_KEY;
     // console.log(apiKey);
     // console.log(API_KEY);
 
@@ -101,7 +100,7 @@ export const ChatPage = () => {
   
 
   /* create functions for placing user and bot messages in chat bubbles
-     in the chat box. */
+     in the chat box. (Partially Complete) */
 
 
 
