@@ -14,19 +14,7 @@ app.use(require("./routes/register"));
 // Get driver connection
 const dbo = require("./db/conn");
 
-// Adjust the route to include password hashing
 
-// passport.use(new GoogleStrategy({
-//   callbackURL: '/auth/google/callback'
-// },
-//   (accessToken, refreshToken, profile, done) => {
-//       const user = {
-//         username:profile.name,
-//       }
-//       console.log(profile);
-//       done(null, profile);
-//   }));
-// // Set up session and Passport
 app.use(session({
   secret: 'your_secret_key',  // Replace with a strong secret key
   resave: true,
