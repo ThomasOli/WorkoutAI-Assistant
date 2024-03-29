@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { UserNavbar } from "./userNavbar";
 import './profilePage.css';
