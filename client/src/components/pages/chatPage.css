@@ -181,10 +181,6 @@ body {
   padding-top: 5px;
 }
 
-.exit-button:hover {
-  background-color: #a90000;
-}
-
 .chat-message-board {
   background: #ffffff;
   width: 62%;
@@ -195,86 +191,25 @@ body {
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
-/* chat bubbles styes */
-
-.chat-messages-section {
-  flex: 1;
-  overflow-y: hidden;
-  overflow-x: hidden;
-  padding: 10px;
-}
-
-.msg {
-  border-style: solid;
-  padding: 8px 12px;
-  margin-bottom: 8px;
-  max-width: 25%;
-}
-
-.User {
-  display: inline-block;
-  font-size: 14px;
-  /* align-self: flex-end; */
-  background-color: lightpink;
-  margin-bottom: 3px;
-}
-
-.User, .ChatGPT {
-  color: black;
-  border-style: solid;
-  border-color: black;
-  border-width: 1px;
-  border-radius: 10px;
-  padding-left: 6px;
-  padding-right: 6px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-
-
-}
-
-.ChatGPT {
-  display: inline-block;
-  font-size: 14px;
-  /* align-self: flex-start; */
-  /* padding-left: 500px; */
-  margin-left: 500px;
-  background-color: lightblue;
-  text-align: left;
-}
-
-/* .messenger-icon {
-  display: inline-block;
-  width: 40px;
-  height: 40px;
-  background-color: green;
-  border-radius: 50%;
-} */
-
 .enter-button {
   background: #800080;
   border-style: solid;
   border-color: #000000;
   border-width: 1px;
-  width: 78px;
-  height: 82px;
+  width: 70px;
+  height: 74px;
   position: absolute;
-  left: 1257px;
+  left: 1276px;
   top: 754px;
   box-shadow: inset 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   cursor: pointer;
 }
 
 .enter-button .enter-button-icon {
-  /* background-color: #800080; */
+  background-color: #800080;
   padding-top: 3px;
   padding-left: 2px;
   height: 50px;
-}
-
-.enter-button:hover,
-.enter-button-icon:hover {
-  background: #5f015f;
 }
 
 .clear-button {
@@ -282,26 +217,20 @@ body {
   border-style: solid;
   border-color: #000000;
   border-width: 1px;
-  width: 72px;
-  height: 82px;
+  width: 69px;
+  height: 74px;
   position: absolute;
-  left: 1331px;
+  left: 1345px;
   top: 754px;
   box-shadow: inset 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   cursor: pointer;
 }
 
 .clear-button-icon {
-  /* background-color: #ff0202; */
+  background-color: #ff0202;
   padding-top: 3px;
-  padding-left: 3px;
-  padding-right: 2px;
+  padding-left: 2px;
   height: 50px;
-}
-
-.clear-button:hover,
-.clear-button-icon:hover {
-  background-color: #b10000;
 }
 
 .raise-the-bar-chat-icon-text {
@@ -346,12 +275,6 @@ body {
   height: 50px;
 }
 
-.home-button:hover,
-.plan-workout-button:hover,
-.view-progress-button:hover {
-  background-color: #c8c8c8;
-}
-
 .plan-workout-button {
   color: #000000;
   text-align: center;
@@ -382,7 +305,6 @@ body {
 .plan-workout-button,
 .view-progress-button {
   background-color: white;
-  line-height: 16px;
   border: 2px solid gray;
   border-radius: 8px;
   cursor: pointer;
