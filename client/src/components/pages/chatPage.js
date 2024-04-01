@@ -1,4 +1,3 @@
-
 import React from "react";
 import "./chatPage.css";
 import Button from "@mui/material/Button";
@@ -8,14 +7,12 @@ import send from "../images/sendMessage.png";
 import clear from "../images/deleteTextContents.png";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-
 import { API_KEY } from "../config2.js";
 // require('dotenv').config({ path: "./config.env" });
 // const apiKey = process.env.API_KEY;
 
 
-/*import { TextField } from '@mui/material';*/
-
+// /*import { TextField } from '@mui/material';*/
 
 export const ChatPage = () => {
 
@@ -175,7 +172,8 @@ export const ChatPage = () => {
     </>
   );
 };
+
   
-    /*<div>chatPage</div>*/
+//     /*<div>chatPage</div>*/
 
 export default ChatPage;
