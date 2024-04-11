@@ -2,16 +2,6 @@ import React from "react";
 // We use Route in order to define the different routes of our application
 import { Route, Routes } from "react-router-dom";
  // We import all the components we need in our app
-import Navbar from "./components/navbar.js";
-
-import RecordList from "./components/recordList.js";
-import Edit from "./components/edit.js";
-import Create from "./components/create.js";
-
-// import RecordList from "./components/recordList.js";
-// import Edit from "./components/edit.js";
-// import Create from "./components/create.js";
-
 import LogInScreen from "./components/pages/loginScreen.js";
 import HomeScreen from "./components/pages/home.js";
 import ChatPage from "./components/pages/chatPage.js";
@@ -20,7 +10,7 @@ import ProfilePage from "./components/pages/profilePage.js";
 
 import CreateAccountPage from "./components/pages/createAccountPage.js";
 import ForgotPassPage from "./components/pages/forgotPassPage.js";
-
+import { getId } from "./components/pages/userId.js";
 
 const App = () => {
  return (
@@ -45,7 +35,6 @@ const App = () => {
 
        <Route path="/createAccount" element={<CreateAccountPage />}/>
        <Route path="/forgotPassword" element={<ForgotPassPage />}/>
-
      </Routes>
    </div>
  );
