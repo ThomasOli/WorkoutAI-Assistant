@@ -13,7 +13,7 @@ import axios from 'axios';
 // add if logout, reset local storage of current user to empty
 
 export const ProfilePage = () => {
-  const [userStat, setUserStat] = useState(false);
+  // const [userStat, setUserStat] = useState(false);
   const [userInfo, setUserInfo] = useState(true);
   const [notif, setNotif] = useState(false);
   const [userFirstName, setUserFirstName] = useState('test');
@@ -191,14 +191,14 @@ export const ProfilePage = () => {
     }
   };
 
-  const userStatPart = () => {
-    return (
-      <Box height='1000px' margin='10px'>
-        user stats
+  // const userStatPart = () => {
+  //   return (
+  //     <Box height='1000px' margin='10px'>
+  //       user stats
 
-      </Box>
-    );
-  };
+  //     </Box>
+  //   );
+  // };
 
   const notifPart = () => {
     return (
@@ -226,20 +226,20 @@ export const ProfilePage = () => {
     )
   }
 
-  const handleUserStats = () => {
-    setUserStat(true);
-    setNotif(false);
-    setUserInfo(false);
-  };
+  // const handleUserStats = () => {
+  //   setUserStat(true);
+  //   setNotif(false);
+  //   setUserInfo(false);
+  // };
 
   const handleUserInfo = () => {
-    setUserStat(false);
+    // setUserStat(false);
     setNotif(false);
     setUserInfo(true);
   };
 
   const handleNotifications = () => {
-    setUserStat(false);
+    // setUserStat(false);
     setNotif(true);
     setUserInfo(false);
   };

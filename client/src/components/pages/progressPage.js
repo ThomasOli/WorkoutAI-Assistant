@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 import { UserNavbar } from "./userNavbar";
 import Tabs from '@mui/material/Tabs';
@@ -21,11 +22,19 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import './progressPage.css'
+import './progressPage.css';
 // import { set } from "mongoose";
+
+// have a fetch function, array.map and render everything would need to 
 
 export const ProgressPage = () => {
   const [value, setValue] = React.useState(0);
+  const userLinks = {
+    in: '/page/:id/in-progress', 
+    comp: '/page/:id/completed', 
+    fav: '/page/:id/favorites'
+  }
+  const [showChecks, setShowChecks] = useState(true);
   const [tasks, setTasks] = useState([
     {
       workoutName: 'Workout 1',
@@ -67,6 +76,21 @@ export const ProgressPage = () => {
   ]);
   const [completedTasks, setCompletedTasks] = useState([]);
   const [favoriteTasks, setFavoriteTasks] = useState([]);
+  // const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+  // const loadTask = async(e) => {
+  //   // axios.get('/api/workouts')
+  //   // Make a GET request to the API endpoint
+    // const test = axios.get('/')
+    // .then(response => {
+    //   // Handle successful response
+    //   console.log('Data:', response.data);
+    // })
+    // .catch(error => {
+    //   // Handle errors
+    //   console.error('Error fetching data:', error);
+    // });
+    // console.log(test);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -147,6 +171,96 @@ export const ProgressPage = () => {
     setDialogSubmit(true); // ensures that user clicked save
   };
 
+  const Workout = ({workout}) => {
+    // ISSUE: Accordion continues to collapses every time you click on it. NEED TO FIX THIS
+    return (
+      <Accordion key={workout.id} disabled={false}>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`panel-${workout.workoutName}-content`} id={`panel-${workout.workoutName}-header`}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            
+            <IconButton onClick={() => handleFavoriteToggle(workout.workoutName)} color={workout.isFavorite ? 'primary' : 'default'}>
+              {workout.isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+            </IconButton>
+            <Typography>{workout.workoutName}</Typography>
+          </div>
+          <IconButton onClick={() => handleCopyTask(tasks, workout.workoutName)}>
+            <FileCopyIcon />
+          </IconButton>
+        </AccordionSummary>
+        <AccordionDetails>
+          <table style={{align: 'right'}}>
+            <thead>
+              <tr>
+                {showChecks && <th style={{width: '10%', textAlign: 'left'}}>Progress</th>}
+                <th style={{width: '30%', textAlign: 'left', paddingLeft: '10px'}}>Exercise</th>
+                <th style={{width: '15%', textAlign: 'left', paddingLeft: '10px'}}>Reps/Time</th>
+                <th style={{width: '15%', textAlign: 'left', paddingLeft: '10px'}}>Sets</th>
+                <th style={{width: '30%', textAlign: 'left', paddingLeft: '10px'}}>Weight Recommendation</th>
+                <th style={{width: '30%', textAlign: 'left', paddingLeft: '10px'}}>Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              {workout.checked.map((checkbox, index) => (
+                <tr key={index}>
+                  {showChecks && <td style={{width: '10%'}}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={checkbox}
+                          onChange={() => handleCheckboxChange(workout.workoutName, index)}
+                          disabled={false}
+                        />
+                      }
+                    />
+                  </td>}
+                  <td style={{paddingLeft: '10px'}}>{workout.exercises[index]}</td>
+                  <td style={{paddingLeft: '10px'}}>{workout.timeRep[index]}</td>
+                  <td style={{paddingLeft: '10px'}}>{workout.sets[index]}</td>
+                  <td style={{paddingLeft: '10px'}}>{workout.weightRec[index]}</td>
+                  <td style={{paddingLeft: '10px'}}>{workout.type[index]}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </AccordionDetails>
+      </Accordion>
+    )
+  };
+
+  useEffect(() => {
+    const fetchWorkouts = async () => {
+      try {
+        const res = await axios.get('http://localhost:5000/api/workouts', {
+          params: {
+            userId: "123"
+          }
+        });
+        console.log("Workout data:", res.data);
+        console.log("response: ", res);
+        // setTasks(res.exercises);
+        // console.log("checking tasks")
+        // console.log(tasks);
+      } catch (error) {
+        console.error('Error fetching workouts:', error);
+      }
+
+      // try {
+      //   const res = await axios.get('http://localhost:5000/api/workouts/completed', {
+      //     params: {
+      //       UserId: '123'
+      //     }
+      //   });
+      //   console.log("Completed Workout data:", res.Workout);
+      //   setCompletedTasks(res.Workout);
+      //   console.log("checking completed")
+      //   console.log(completedTasks);
+      // } catch (error) {
+      //   console.error('Error fetching completed workouts:', error);
+      // }
+    };
+    fetchWorkouts();
+  }, [tasks, completedTasks]);
+
   useEffect(() => {
     if(!dialogOpen && dialogSubmit && newWorkoutName !== '') {
       const taskToCopy = targetTab.find((task) => task.workoutName === ogWorkoutName);
@@ -167,134 +281,25 @@ export const ProgressPage = () => {
       <UserNavbar/>  
         <div className='overlay-background'>
           <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-            <Tab label="In Progress" component={Link} to="/page/:id/in-progress" />
-            <Tab label="Completed" component={Link} to="/page/:id/completed" />
-            <Tab label="Favorites" component={Link} to="/page/:id/favorites" />
+            <Tab label="In Progress" component={Link} to={userLinks[0]} />
+            <Tab label="Completed" component={Link} to={userLinks[1]} />
+            <Tab label="Favorites" component={Link} to={userLinks[2]}/>
           </Tabs>
 
           <Box mt={4} position='static' minHeight={'70vh'} marginBottom={'10px'}>
           <Typography component="div" role="tabpanel" hidden={value !== 0}>
-            {tasks.map((task) => (
-              <Accordion key={task.id} disabled={false}>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`panel-${task.workoutName}-content`} id={`panel-${task.workoutName}-header`}>
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    
-                    <IconButton onClick={() => handleFavoriteToggle(task.workoutName)} color={task.isFavorite ? 'primary' : 'default'}>
-                      {task.isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-                    </IconButton>
-                    <Typography>{task.workoutName}</Typography>
-                  </div>
-                  <IconButton onClick={() => handleCopyTask(tasks, task.workoutName)}>
-                    <FileCopyIcon />
-                  </IconButton>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <table>
-                    <thead>
-                      <tr>
-                        <th style={{width: '10%'}}>Progress</th>
-                        <th style={{width: '25%'}}>Exercise</th>
-                        <th style={{width: '15%'}}>Reps/Time</th>
-                        <th style={{width: '15%'}}>Sets</th>
-                        <th style={{width: '30%'}}>Weight Recommendation</th>
-                        <th style={{width: '30%'}}>Type</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {task.checked.map((checkbox, index) => (
-                        <tr key={index}>
-                          <td>
-                            <FormControlLabel
-                              control={
-                                <Checkbox
-                                  checked={checkbox}
-                                  onChange={() => handleCheckboxChange(task.workoutName, index)}
-                                  disabled={false}
-                                />
-                              }
-                            />
-                          </td>
-                          <td>{task.exercises[index]}</td>
-                          <td>{task.timeRep[index]}</td>
-                          <td>{task.sets[index]}</td>
-                          <td>{task.weightRec[index]}</td>
-                          <td>{task.type[index]}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </AccordionDetails>
-              </Accordion>
+            {tasks.map((task, index) => (
+              <Workout key={index} workout={task} showChecks={() => setShowChecks(true)}/>
             ))}
           </Typography>
         <Typography component="div" role="tabpanel" hidden={value !== 1}>
-              {completedTasks.map((completedTask) => (
-                <Accordion key={completedTask.workoutName} disabled={false}>
-                  <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`panel-${completedTask.workoutName}-content`} id={`panel-${completedTask.workoutName}-header`}>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <IconButton onClick={() => handleFavoriteToggle(completedTask.workoutName)} color={completedTask.isFavorite ? 'primary' : 'default'}>
-                        {completedTask.isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-                        </IconButton>
-                      <Typography>{completedTask.workoutName}</Typography>
-                    </div>
-                    <IconButton onClick={() => handleCopyTask(completedTasks, completedTask.workoutName)}>
-                      <FileCopyIcon />
-                  </IconButton>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <table>
-                      <thead>
-                        <tr>
-                          <th style={{ width: '40%' }}>Exercise</th>
-                          <th style={{ width: '40%' }}>Number of Reps/Time</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                      {completedTask.exercises.map((exercise, index) => (
-                        <tr key={index}>
-                          <td>{exercise}</td>
-                          <td>{completedTask.timeRep[index]}</td>
-                        </tr>
-                      ))}
-                      </tbody>
-                    </table>
-                  </AccordionDetails>
-                </Accordion>
+              {completedTasks.map((completedTask, index) => (
+                <Workout key={index} workout={completedTask} showChecks={() => setShowChecks(false)}/>
               ))}
             </Typography>
             <Typography component="div" role="tabpanel" hidden={value !== 2}>
-              {favoriteTasks.map((favoriteTask) => (
-                <Accordion key={favoriteTask.id}>
-                  <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`panel-${favoriteTask.workoutName}-content`} id={`panel-${favoriteTask.workoutName}-header`}>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <IconButton onClick={() => handleFavoriteToggle(favoriteTask.workoutName)} color="primary">
-                        <FavoriteIcon />
-                      </IconButton>
-                      <Typography>{favoriteTask.workoutName}</Typography>
-                    </div>
-                    <IconButton onClick={() => handleCopyTask(favoriteTasks, favoriteTask.workoutName)}>
-                      <FileCopyIcon />
-                    </IconButton>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                  <table>
-                      <thead>
-                        <tr>
-                          <th style={{ width: '40%' }}>Exercise</th>
-                          <th style={{ width: '40%' }}>Number of Reps/Time</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                      {favoriteTask.exercises.map((exercise, index) => (
-                        <tr key={index}>
-                          <td>{exercise}</td>
-                          <td>{favoriteTask.timeRep[index]}</td>
-                        </tr>
-                      ))}
-                      </tbody>
-                    </table>
-                  </AccordionDetails>
-                </Accordion>
+              {favoriteTasks.map((favoriteTask, index) => (
+                <Workout key={index} workout={favoriteTask} showChecks={() => setShowChecks(false)}/>
               ))}
             </Typography>
           </Box>
