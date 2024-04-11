@@ -14,9 +14,13 @@ export const LogInScreen = () => {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
+    
     e.preventDefault();
+    if (!email || !password) {
+      setErrorMessage("Please enter both email and password.");
+      return;
+    }
     try {
-      
       const res = await axios.post('http://localhost:5000/login', { email, password });
       console.log(res.data);
       navigate('/home/:1'); // Adjust as necessary
