@@ -76,7 +76,6 @@ export const ProgressPage = () => {
   ]);
   const [completedTasks, setCompletedTasks] = useState([]);
   const [favoriteTasks, setFavoriteTasks] = useState([]);
-  // const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
   // const loadTask = async(e) => {
   //   // axios.get('/api/workouts')
@@ -171,11 +170,14 @@ export const ProgressPage = () => {
     setDialogSubmit(true); // ensures that user clicked save
   };
 
+  const [expand, setExpand] = useState(false);
+
   const Workout = ({workout}) => {
     // ISSUE: Accordion continues to collapses every time you click on it. NEED TO FIX THIS
+    // Make array
     return (
-      <Accordion key={workout.id} disabled={false}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`panel-${workout.workoutName}-content`} id={`panel-${workout.workoutName}-header`}>
+      <Accordion key={workout.id} disabled={false} expanded={expand}>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />} onClick={() => setExpand(!expand)} aria-controls={`panel-${workout.workoutName}-content`} id={`panel-${workout.workoutName}-header`}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             
             <IconButton onClick={() => handleFavoriteToggle(workout.workoutName)} color={workout.isFavorite ? 'primary' : 'default'}>
@@ -259,7 +261,7 @@ export const ProgressPage = () => {
       // }
     };
     fetchWorkouts();
-  }, [tasks, completedTasks]);
+  }, []);
 
   useEffect(() => {
     if(!dialogOpen && dialogSubmit && newWorkoutName !== '') {
@@ -281,25 +283,175 @@ export const ProgressPage = () => {
       <UserNavbar/>  
         <div className='overlay-background'>
           <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-            <Tab label="In Progress" component={Link} to={userLinks[0]} />
-            <Tab label="Completed" component={Link} to={userLinks[1]} />
-            <Tab label="Favorites" component={Link} to={userLinks[2]}/>
+            <Tab label="In Progress" component={Link} to='/page/:id/in-progress' />
+            <Tab label="Completed" component={Link} to='/page/:id/completed' />
+            <Tab label="Favorites" component={Link} to='/page/:id/favorites'/>
           </Tabs>
 
           <Box mt={4} position='static' minHeight={'70vh'} marginBottom={'10px'}>
           <Typography component="div" role="tabpanel" hidden={value !== 0}>
             {tasks.map((task, index) => (
-              <Workout key={index} workout={task} showChecks={() => setShowChecks(true)}/>
+              <Workout key={index} workout={task}/>
+              // <Accordion key={task.id} disabled={false}>
+              //   <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`panel-${task.workoutName}-content`} id={`panel-${task.workoutName}-header`}>
+              //     <div style={{ display: 'flex', alignItems: 'center' }}>
+                    
+              //       <IconButton onClick={() => handleFavoriteToggle(task.workoutName)} color={task.isFavorite ? 'primary' : 'default'}>
+              //         {task.isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+              //       </IconButton>
+              //       <Typography>{task.workoutName}</Typography>
+              //     </div>
+              //     <IconButton onClick={() => handleCopyTask(tasks, task.workoutName)}>
+              //       <FileCopyIcon />
+              //     </IconButton>
+              //   </AccordionSummary>
+              //   <AccordionDetails>
+              //     <table style={{align: 'right'}}>
+              //       <thead>
+              //         <tr>
+              //           {showChecks && <th style={{width: '10%', textAlign: 'left'}}>Progress</th>}
+              //           <th style={{width: '30%', textAlign: 'left', paddingLeft: '10px'}}>Exercise</th>
+              //           <th style={{width: '15%', textAlign: 'left', paddingLeft: '10px'}}>Reps/Time</th>
+              //           <th style={{width: '15%', textAlign: 'left', paddingLeft: '10px'}}>Sets</th>
+              //           <th style={{width: '30%', textAlign: 'left', paddingLeft: '10px'}}>Weight Recommendation</th>
+              //           <th style={{width: '30%', textAlign: 'left', paddingLeft: '10px'}}>Type</th>
+              //         </tr>
+              //       </thead>
+              //       <tbody>
+              //         {task.checked.map((checkbox, index) => (
+              //           <tr key={index}>
+              //             {showChecks && <td style={{width: '10%'}}>
+              //               <FormControlLabel
+              //                 control={
+              //                   <Checkbox
+              //                     checked={checkbox}
+              //                     onChange={() => handleCheckboxChange(task.workoutName, index)}
+              //                     disabled={false}
+              //                   />
+              //                 }
+              //               />
+              //             </td>}
+              //             <td style={{paddingLeft: '10px'}}>{task.exercises[index]}</td>
+              //             <td style={{paddingLeft: '10px'}}>{task.timeRep[index]}</td>
+              //             <td style={{paddingLeft: '10px'}}>{task.sets[index]}</td>
+              //             <td style={{paddingLeft: '10px'}}>{task.weightRec[index]}</td>
+              //             <td style={{paddingLeft: '10px'}}>{task.type[index]}</td>
+              //           </tr>
+              //         ))}
+              //       </tbody>
+              //     </table>
+              //   </AccordionDetails>
+              // </Accordion>
             ))}
           </Typography>
         <Typography component="div" role="tabpanel" hidden={value !== 1}>
               {completedTasks.map((completedTask, index) => (
-                <Workout key={index} workout={completedTask} showChecks={() => setShowChecks(false)}/>
+                <Workout key={index} workout={completedTask}/>
+                // <Accordion key={completedTask.id} disabled={false}>
+                //   <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`panel-${completedTask.workoutName}-content`} id={`panel-${completedTask.workoutName}-header`}>
+                //     <div style={{ display: 'flex', alignItems: 'center' }}>
+                      
+                //       <IconButton onClick={() => handleFavoriteToggle(completedTask.workoutName)} color={completedTask.isFavorite ? 'primary' : 'default'}>
+                //         {completedTask.isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                //       </IconButton>
+                //       <Typography>{completedTask.workoutName}</Typography>
+                //     </div>
+                //     <IconButton onClick={() => handleCopyTask(tasks, completedTask.workoutName)}>
+                //       <FileCopyIcon />
+                //     </IconButton>
+                //   </AccordionSummary>
+                //   <AccordionDetails>
+                //     <table style={{align: 'right'}}>
+                //       <thead>
+                //         <tr>
+                //           {/* {showChecks && <th style={{width: '10%', textAlign: 'left'}}>Progress</th>} */}
+                //           <th style={{width: '30%', textAlign: 'left', paddingLeft: '10px'}}>Exercise</th>
+                //           <th style={{width: '15%', textAlign: 'left', paddingLeft: '10px'}}>Reps/Time</th>
+                //           <th style={{width: '15%', textAlign: 'left', paddingLeft: '10px'}}>Sets</th>
+                //           <th style={{width: '30%', textAlign: 'left', paddingLeft: '10px'}}>Weight Recommendation</th>
+                //           <th style={{width: '30%', textAlign: 'left', paddingLeft: '10px'}}>Type</th>
+                //         </tr>
+                //       </thead>
+                //       <tbody>
+                //         {completedTask.checked.map((checkbox, index) => (
+                //           <tr key={index}>
+                //             {/* {showChecks && <td style={{width: '10%'}}>
+                //               <FormControlLabel
+                //                 control={
+                //                   <Checkbox
+                //                     checked={checkbox}
+                //                     onChange={() => handleCheckboxChange(completedTask.workoutName, index)}
+                //                     disabled={false}
+                //                   />
+                //                 }
+                //               />
+                //             </td>} */}
+                //             <td style={{paddingLeft: '10px'}}>{completedTask.exercises[index]}</td>
+                //             <td style={{paddingLeft: '10px'}}>{completedTask.timeRep[index]}</td>
+                //             <td style={{paddingLeft: '10px'}}>{completedTask.sets[index]}</td>
+                //             <td style={{paddingLeft: '10px'}}>{completedTask.weightRec[index]}</td>
+                //             <td style={{paddingLeft: '10px'}}>{completedTask.type[index]}</td>
+                //           </tr>
+                //         ))}
+                //       </tbody>
+                //     </table>
+                //   </AccordionDetails>
+                // </Accordion>
               ))}
             </Typography>
             <Typography component="div" role="tabpanel" hidden={value !== 2}>
               {favoriteTasks.map((favoriteTask, index) => (
-                <Workout key={index} workout={favoriteTask} showChecks={() => setShowChecks(false)}/>
+                <Workout key={index} workout={favoriteTask}/>
+                // <Accordion key={favoriteTask.id} disabled={false}>
+                //   <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`panel-${favoriteTask.workoutName}-content`} id={`panel-${favoriteTask.workoutName}-header`}>
+                //     <div style={{ display: 'flex', alignItems: 'center' }}>
+                      
+                //       <IconButton onClick={() => handleFavoriteToggle(favoriteTask.workoutName)} color={favoriteTask.isFavorite ? 'primary' : 'default'}>
+                //         {favoriteTask.isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                //       </IconButton>
+                //       <Typography>{favoriteTask.workoutName}</Typography>
+                //     </div>
+                //     <IconButton onClick={() => handleCopyTask(tasks, favoriteTask.workoutName)}>
+                //       <FileCopyIcon />
+                //     </IconButton>
+                //   </AccordionSummary>
+                //   <AccordionDetails>
+                //     <table style={{align: 'right'}}>
+                //       <thead>
+                //         <tr>
+                //           {/* {showChecks && <th style={{width: '10%', textAlign: 'left'}}>Progress</th>} */}
+                //           <th style={{width: '30%', textAlign: 'left', paddingLeft: '10px'}}>Exercise</th>
+                //           <th style={{width: '15%', textAlign: 'left', paddingLeft: '10px'}}>Reps/Time</th>
+                //           <th style={{width: '15%', textAlign: 'left', paddingLeft: '10px'}}>Sets</th>
+                //           <th style={{width: '30%', textAlign: 'left', paddingLeft: '10px'}}>Weight Recommendation</th>
+                //           <th style={{width: '30%', textAlign: 'left', paddingLeft: '10px'}}>Type</th>
+                //         </tr>
+                //       </thead>
+                //       <tbody>
+                //         {favoriteTask.checked.map((checkbox, index) => (
+                //           <tr key={index}>
+                //             {/* {showChecks && <td style={{width: '10%'}}>
+                //               <FormControlLabel
+                //                 control={
+                //                   <Checkbox
+                //                     checked={checkbox}
+                //                     onChange={() => handleCheckboxChange(favoriteTask.workoutName, index)}
+                //                     disabled={false}
+                //                   />
+                //                 }
+                //               />
+                //             </td>} */}
+                //             <td style={{paddingLeft: '10px'}}>{favoriteTask.exercises[index]}</td>
+                //             <td style={{paddingLeft: '10px'}}>{favoriteTask.timeRep[index]}</td>
+                //             <td style={{paddingLeft: '10px'}}>{favoriteTask.sets[index]}</td>
+                //             <td style={{paddingLeft: '10px'}}>{favoriteTask.weightRec[index]}</td>
+                //             <td style={{paddingLeft: '10px'}}>{favoriteTask.type[index]}</td>
+                //           </tr>
+                //         ))}
+                //       </tbody>
+                //     </table>
+                //   </AccordionDetails>
+                // </Accordion>
               ))}
             </Typography>
           </Box>
@@ -324,3 +476,4 @@ export const ProgressPage = () => {
 }
 
 export default ProgressPage
+

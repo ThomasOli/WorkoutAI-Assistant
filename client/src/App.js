@@ -10,7 +10,6 @@ import ProfilePage from "./components/pages/profilePage.js";
 
 import CreateAccountPage from "./components/pages/createAccountPage.js";
 import ForgotPassPage from "./components/pages/forgotPassPage.js";
-import { getId } from "./components/pages/userId.js";
 
 const App = () => {
  return (
