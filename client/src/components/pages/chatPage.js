@@ -7,6 +7,8 @@ import send from "../images/sendMessage.png";
 import clear from "../images/deleteTextContents.png";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useRef } from "react";
+import { useEffect } from "react";
 import { API_KEY } from "../config2.js";
 // require('dotenv').config({ path: "./config.env" });
 // const apiKey = process.env.API_KEY;
@@ -49,6 +51,20 @@ export const ChatPage = () => {
     }
   }
 
+  // automatically scroll down to the most recent messages in the chat message board
+  function autoScrollDown() {
+    let messagesBoard = document.querySelector(".chat-message-board");
+    messagesBoard.current.scrollTop = messagesBoard.current.scrollHeight;
+  }
+
+  // attempt 2: automatically scroll down to most recent messages
+  const chatMsgsRef = useRef(null);
+  useEffect(() => {
+    if (chatMsgsRef.current) {
+      chatMsgsRef.current.scrollTop = chatMsgsRef.current.scrollHeight;
+    }
+  }, [msgs])
+
   // user input is stored in userTextInput variable
   // function to receive response by API
   const sendText = async () => {
@@ -76,6 +92,7 @@ export const ChatPage = () => {
       }),
     })
     let GPTResponseData = await textFromGPT.json();
+    // console.log(GPTResponseData);
     // let GPTResponse = GPTResponseData.choices[0].text;
     let GPTResponse = GPTResponseData.choices[0].message.content;
 
@@ -94,33 +111,31 @@ export const ChatPage = () => {
     // reset the underlying contents of the text box
     setUserTextInput("");
   }
+
+  // exit button code
+  /* <button className="exit-button">
+        <img className="exit-button-icon" alt="Exit" src={exit}>{/* redirect to last opened page (optional) */
   
-
-  /* create functions for placing user and bot messages in chat bubbles
-     in the chat box. (Partially Complete) */
-
-
 
   return (
     <>
       <div className="chat-page-layout-design">
         <div className="sidebar">
-          <div className="user-profile-image">Profile Picture</div>
+          <div className="user-profile-image">Profile Picture {/* get profile picture from database */}</div>
           <div className="user-name">
-            FirstName LastName
+            FirstName LastName {/* get username from database */}
           </div>
-          <Button className="home-button" 
+          <button className="home-button" 
             component={Link} to='/home/:id'>
-              Home
-          </Button>
-          <Button className="plan-workout-button">Plan a Workout</Button>
-          <Button className="view-progress-button" 
+              HOME
+          </button>
+          
+          <button className="plan-workout-button">PLAN A WORKOUT {/* redirect to workout planning page */}</button>
+          <button className="view-progress-button" 
             component={Link} to="/progress/:id">
-              View Progress
-          </Button>
-          <Button className="exit-button">
-            <img className="exit-button-icon" alt="Exit" src={exit}></img>
-          </Button>
+              VIEW PROGRESS
+          </button>
+          
         </div>
         <svg
           class="chat-section"
@@ -141,7 +156,7 @@ export const ChatPage = () => {
         <img className="raise-the-bar-chat-icon" alt="Chat Icon" src={logo}></img>
         <div className="chat-page-title">CHAT</div>
         <div className="chat-message-board">
-          <div className="chat-messages-section">
+          <div ref={chatMsgsRef} className="chat-messages-section">
             {/* {msgs.map((msg, index) => (
               <div key={index} className={`message ${msg.sender}`}>
                 {msg.text}
@@ -155,12 +170,12 @@ export const ChatPage = () => {
             ))}
           </div>
         </div>
-        <Button className="enter-button" onClick={ifEnterButtonPressed}>
+        <button className="enter-button" onClick={ifEnterButtonPressed}>
           <img className="enter-button-icon" alt="Enter" src={send}></img>
-        </Button>
-        <Button className="clear-button" onClick={ifClearButtonPressed}>
+        </button>
+        <button className="clear-button" onClick={ifClearButtonPressed}>
           <img className="clear-button-icon" alt="Clear" src={clear}></img>
-        </Button>
+        </button>
         <div className="raise-the-bar-chat-icon-text">Raise the Bar</div>
         <input className="text-box" 
           type="text" 

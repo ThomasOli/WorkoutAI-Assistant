@@ -175,10 +175,11 @@ body {
   left: 153px;
   top: 791px;
   cursor: pointer;
+  transition: background-color 0.25s;
 }
 
 .exit-button .exit-button-icon {
-  padding-top: 5px;
+  padding-top: 2px;
 }
 
 .exit-button:hover {
@@ -189,10 +190,19 @@ body {
   background: #ffffff;
   width: 62%;
   height: 499px;
+  
+  /* max-height: 500px; */
+
   position: absolute;
   left: 520px;
   top: 228px;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  overflow-y: scroll; /* message board can now scroll */
+}
+
+/* makes the scrollbar in the message board invisible */
+.chat-message-board::-webkit-scrollbar {
+  width: 0;
 }
 
 /* chat bubbles styes */
@@ -215,7 +225,7 @@ body {
   display: inline-block;
   font-size: 14px;
   /* align-self: flex-end; */
-  background-color: lightpink;
+  background-color: rgb(222, 222, 222);
   margin-bottom: 3px;
 }
 
@@ -239,7 +249,8 @@ body {
   /* align-self: flex-start; */
   /* padding-left: 500px; */
   margin-left: 500px;
-  background-color: lightblue;
+  background-color: rgb(143, 0, 143);
+  color: white;
   text-align: left;
 }
 
@@ -256,10 +267,12 @@ body {
   border-style: solid;
   border-color: #000000;
   border-width: 1px;
-  width: 78px;
+  /* 78 */
+  width: 79px;
   height: 82px;
   position: absolute;
-  left: 1257px;
+  /* 1257 */
+  left: 1258px;
   top: 754px;
   box-shadow: inset 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   cursor: pointer;
@@ -270,6 +283,7 @@ body {
   padding-top: 3px;
   padding-left: 2px;
   height: 50px;
+  transition: background-color 0.25s;
 }
 
 .enter-button:hover,
@@ -282,13 +296,16 @@ body {
   border-style: solid;
   border-color: #000000;
   border-width: 1px;
-  width: 72px;
+  /* 72 */
+  width: 77px;
   height: 82px;
   position: absolute;
-  left: 1331px;
+  /* 1331 */
+  left: 1336px;
   top: 754px;
   box-shadow: inset 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   cursor: pointer;
+  transition: background-color 0.25s;
 }
 
 .clear-button-icon {
@@ -297,6 +314,7 @@ body {
   padding-left: 3px;
   padding-right: 2px;
   height: 50px;
+  transition: background-color 0.25s;
 }
 
 .clear-button:hover,
@@ -387,6 +405,7 @@ body {
   border-radius: 8px;
   cursor: pointer;
   box-shadow: 2px 2px 2px rgb(32, 32, 32);
+  transition: background-color 0.25s;
 }
 
 .text-box {
