@@ -3,6 +3,7 @@ const recordRoutes = express.Router();
 const dbo = require("../db/conn");
 const ObjectId = require("mongodb").ObjectId;
 
+<<<<<<< HEAD
 recordRoutes.route("/record").get(function (req, res) {
   let db_connect = dbo.getDb();
   db_connect
@@ -73,3 +74,31 @@ recordRoutes.route("/:id").delete((req, response) => {
 });
  
 module.exports = recordRoutes;
+=======
+recordRoutes.route("/record/add").post(async (req, response) => {
+  try {
+    const db = await dbo.getDb();
+    const { userID, workoutName, exercises } = req.body;
+
+    // Create a new workout document
+    const newWorkout = {
+      date: new Date(),
+      name: workoutName,
+      userID: userID,
+      favorited: false,
+      completed: false,
+      exercises: exercises // Array of exercises
+    };
+
+    // Insert the new workout document into the database
+    if (workoutName !== "") {
+      const result = await db.collection("workouts").insertOne(newWorkout);
+      response.status(201).json({ message: "Workout added successfully", workoutId: result.insertedId });
+    }
+  } catch (error) {
+    console.error("Error inserting new workout:", error);
+    response.status(500).json({ error: "Internal server error" });
+  }
+});
+module.exports = recordRoutes;
+>>>>>>> 934f6093172a8c6505d60c97ff20a7eba713543b

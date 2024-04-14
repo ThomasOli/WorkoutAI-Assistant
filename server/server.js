@@ -1,3 +1,5 @@
+const passport = require('passport');
+const session = require('express-session');
 require('dotenv').config({ path: './config.env' });
 const express = require("express");
 const mongoose = require('mongoose');
@@ -10,15 +12,51 @@ const cors = require("cors");
 const cron = require('node-cron');
 const nodemailer = require('nodemailer');
 const ScheduledWorkout = require('./models/scheduledWorkout');
+<<<<<<< HEAD
+=======
+const scheduledWorkoutRoutes = require('./routes/scheduledWorkoutRoutes');
+
+
+>>>>>>> 934f6093172a8c6505d60c97ff20a7eba713543b
 const port = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
 
+app.use(require("./routes/register"));
+app.use(require("./routes/record"));
+
+// Get driver connection
+const dbo = require("./db/conn");
+
+
+app.use(session({
+  secret: 'your_secret_key',  // Replace with a strong secret key
+  resave: true,
+  saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+// Define routes
+app.get('/auth/google',
+  passport.authenticate('google', { scope: ['profile', 'email'] })
+);
+app.get('/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/' }),
+  (req, res) => {
+      // Redirect after successful authentication
+      res.redirect('/dashboard');
+  }
+);
+app.get('/logout', (req, res) => {
+  req.logout();
+  res.redirect('/');
+});
+
+
 // Connect to MongoDB with Mongoose
 mongoose.connect(process.env.ATLAS_URI)
   .then(() => {
-    console.log('Successfully connected to MongoDB.');
     
     // Mount various routes
     app.use('/api/workouts', workoutRoutes); // Workout routes
@@ -27,7 +65,12 @@ mongoose.connect(process.env.ATLAS_URI)
     app.use('/api/stretches', stretchRoutes); // Stretch routes
 
     // Start listening for requests after a successful database connection
-    app.listen(port, () => console.log(`Server running on port ${port}`));
+    app.listen(port, () => {
+      dbo.connectToServer(function (err) {
+        if (err) console.error(err);
+      });
+      console.log(`Server is running on port: ${port}`);
+    });
   })
   .catch(err => {
     console.error('Connection error', err.message);
@@ -78,7 +121,39 @@ cron.schedule('* * * * *', async () => {
     await transporter.sendMail(mailOptions);
     await ScheduledWorkout.findByIdAndUpdate(reminder._id, { 'reminder.reminderSent': true }).exec();
   });
+<<<<<<< HEAD
 });
 
 
 
+=======
+  
+  cron.schedule('* * * * *', async () => {
+    try {
+      const now = new Date();
+      const reminders = await ScheduledWorkout.find({
+        'reminder.enabled': true,
+        'reminder.remindAt': { $lte: now },
+        'reminderSent': { $ne: true }
+      });
+  
+      reminders.forEach(async (reminder) => {
+        // Construct the email
+        const mailOptions = {
+          from: process.env.EMAIL_USER, // Use environment variable for sender email
+          to: user.email, // User's email
+          subject: 'Workout Reminder',
+          text: `Just a reminder to complete your workout scheduled for ${scheduledWorkout.scheduledDate}. Go for it!`
+        };        
+  
+        // Send the email
+        await transporter.sendMail(mailOptions);
+  
+        // Update reminder to mark it as sent
+        await ScheduledWorkout.findByIdAndUpdate(reminder._id, { 'reminder.reminderSent': true }).exec();
+      });
+    } catch (error) {
+      console.error('Error running reminder cron job:', error);
+    }
+  });
+>>>>>>> 934f6093172a8c6505d60c97ff20a7eba713543b
