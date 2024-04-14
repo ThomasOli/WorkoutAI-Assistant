@@ -14,8 +14,8 @@ module.exports = {
             const db = await client.connect();
             // Verify we got a good "db" object
             if (db) {
-                _db = db.db("employees");
-                console.log("Successfully connected to MongoDB.");
+                _db = db.db("user.workouts"); 
+                console.log("Successfully connected to MongoDB to the userWorkouts database.");
             }
             return _db;
         } catch (err) {

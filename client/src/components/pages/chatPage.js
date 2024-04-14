@@ -1,114 +1,75 @@
-
-import React from "react";
-import "./chatPage.css";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import logo from "../images/raisethebarLogo.png";
 import exit from "../images/exitButtonSymbol.png";
 import send from "../images/sendMessage.png";
 import clear from "../images/deleteTextContents.png";
-import { useState } from "react";
-
-
-/*import { TextField } from '@mui/material';*/
-
+import "./chatPage.css";
 
 export const ChatPage = () => {
-
-  /* functions can go here and they can be called in html element based classname/id, refer to chatGPT*/
-
-  // initially set user input content to an empty string
+  // State for user input and API response
   const [userTextInput, setUserTextInput] = useState("");
-  // create another useState for the send request to GPT-4 API
   const [textFromGPT, setTextFromGPT] = useState("");
 
-  // update text box contents as user enters or removes text
-  function updateInputField(e) {
+  // Update text box contents as user types
+  const updateInputField = (e) => {
     setUserTextInput(e.target.value);
-  }
+  };
 
-  // only hold the contents of the text box if the textbox is not empty after pressing the enter button
-  function ifEnterButtonPressed() {
-    if (userTextInput.trim() !== "") {
-      sendText();
-    }
-  }
-
-  function ifClearButtonPressed() {
-    // set underlying text input to the empty string
-    setUserTextInput("");
-  }
-
-  // only hold the contents of the text box if the textbox is not empty after pressing enter
-  function ifEnterKeyPressed(e) {
+  // Send text to API if Enter is pressed and input is not empty
+  const ifEnterKeyPressed = (e) => {
     if (e.key === "Enter" && userTextInput.trim() !== "") {
       sendText();
     }
-  }
+  };
 
-  // user input is stored in userTextInput variable
-
-  // function to receive response by API
-  function sendText() {
-    textFromGPT = await fetch(/*link, {method: , headers: , body: ,}*/);
-    
-
-    // reset the underlying contents of the text box
+  // Clear text input
+  const ifClearButtonPressed = () => {
     setUserTextInput("");
-  }
+  };
 
-  
+  // Send user input to the API and fetch response
+  const sendText = async () => {
+    try {
+      const response = await fetch(/*link, {method: , headers: , body: ,}*/);
+      const data = await response.json();
+      setTextFromGPT(data);
+    } catch (error) {
+      console.error('Failed to fetch data:', error);
+    }
+  };
 
   return (
     <>
       <div className="chat-page-layout-design">
         <div className="sidebar">
           <div className="user-profile-image">Profile Picture</div>
-          <div className="user-name">
-            FirstName LastName
-          </div>
+          <div className="user-name">FirstName LastName</div>
           <Button className="home-button">Home</Button>
           <Button className="plan-workout-button">Plan a Workout</Button>
           <Button className="view-progress-button">View Progress</Button>
-          <Button className="exit-button"><img className="exit-button-icon" src={exit}></img></Button>
+          <Button className="exit-button">
+            <img src={exit} className="exit-button-icon" alt="Exit"></img>
+          </Button>
         </div>
-        <svg
-          class="chat-section"
-          width="1199"
-          height="924"
-          viewBox="0 0 1199 924"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M1 1H1198V923H1V1Z"
-            fill="#C6C6C6"
-            stroke="black"
-            stroke-width="2"
-          />
+        <svg className="chat-section" width="1199" height="924" viewBox="0 0 1199 924" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1 1H1198V923H1V1Z" fill="#C6C6C6" stroke="black" strokeWidth="2" />
         </svg>
         <div className="identification-of-ai-section"></div>
-        <img className="raise-the-bar-chat-icon" src={logo}></img>
+        <img src={logo} className="raise-the-bar-chat-icon" alt="Raise the Bar Logo"></img>
         <div className="chat-page-title">CHAT</div>
         <div className="chat-message-board"></div>
-        <Button className="enter-button" onClick={ifEnterButtonPressed}>
-          <img className="enter-button-icon" src={send}></img>
+        <Button className="enter-button" onClick={ifEnterKeyPressed}>
+          <img src={send} className="enter-button-icon" alt="Send Message"></img>
         </Button>
         <Button className="clear-button" onClick={ifClearButtonPressed}>
-          <img className="clear-button-icon" src={clear}></img>
+          <img src={clear} className="clear-button-icon" alt="Clear Text"></img>
         </Button>
         <div className="raise-the-bar-chat-icon-text">Raise the Bar</div>
-        <input className="text-box" 
-          type="text" 
-          placeholder="Begin your fitness journey..." 
-          value={userTextInput} 
-          onKeyDown={ifEnterKeyPressed} 
-          onChange={updateInputField}></input>
+        <input className="text-box" type="text" placeholder="Begin your fitness journey..." value={userTextInput} onKeyDown={ifEnterKeyPressed} onChange={updateInputField}></input>
       </div>
     </>
   );
+};
 
-  
-    /*<div>chatPage</div>*/
-
-
-export default ChatPage
+export default ChatPage;

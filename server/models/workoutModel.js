@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const ExerciseSchema = new mongoose.Schema({
   name: { type: String, required: true },
   timeRep: [Number], 
-  checked: [Boolean]
+  checked: [Boolean] 
 });
 
 const WorkoutSchema = new mongoose.Schema({
