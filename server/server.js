@@ -5,19 +5,15 @@ const express = require("express");
 const mongoose = require('mongoose');
 const workoutRoutes = require('./routes/workoutRoutes');
 const recordRoutes = require('./routes/record');
-const scheduledWorkoutRoutes = require('./routes/scheduledWorkoutRoutes');
 const stretchRoutes = require('./routes/stretchRoutes'); 
 const app = express();
 const cors = require("cors");
 const cron = require('node-cron');
 const nodemailer = require('nodemailer');
 const ScheduledWorkout = require('./models/scheduledWorkout');
-<<<<<<< HEAD
-=======
 const scheduledWorkoutRoutes = require('./routes/scheduledWorkoutRoutes');
 
 
->>>>>>> 934f6093172a8c6505d60c97ff20a7eba713543b
 const port = process.env.PORT || 5000;
 
 app.use(cors());
@@ -31,12 +27,14 @@ const dbo = require("./db/conn");
 
 
 app.use(session({
-  secret: 'your_secret_key',  // Replace with a strong secret key
+  secret: 'your_secret_key',
   resave: true,
   saveUninitialized: true
 }));
+
 app.use(passport.initialize());
 app.use(passport.session());
+
 // Define routes
 app.get('/auth/google',
   passport.authenticate('google', { scope: ['profile', 'email'] })
@@ -44,7 +42,6 @@ app.get('/auth/google',
 app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/' }),
   (req, res) => {
-      // Redirect after successful authentication
       res.redirect('/dashboard');
   }
 );
@@ -57,14 +54,11 @@ app.get('/logout', (req, res) => {
 // Connect to MongoDB with Mongoose
 mongoose.connect(process.env.ATLAS_URI)
   .then(() => {
-    
-    // Mount various routes
-    app.use('/api/workouts', workoutRoutes); // Workout routes
-    app.use('/api/record', recordRoutes); // Record routes
-    app.use('/api/workouts', scheduledWorkoutRoutes); // Scheduled workout routes
-    app.use('/api/stretches', stretchRoutes); // Stretch routes
+    app.use('/api/workouts', workoutRoutes);
+    app.use('/api/record', recordRoutes);
+    app.use('/api/workouts', scheduledWorkoutRoutes);
+    app.use('/api/stretches', stretchRoutes);
 
-    // Start listening for requests after a successful database connection
     app.listen(port, () => {
       dbo.connectToServer(function (err) {
         if (err) console.error(err);
@@ -105,55 +99,26 @@ app.post('/api/test-email', (req, res) => {
 });
 
 cron.schedule('* * * * *', async () => {
-  const now = new Date();
-  const reminders = await ScheduledWorkout.find({
-    'reminder.enabled': true,
-    'reminder.remindAt': { $lte: now },
-    'reminderSent': { $ne: true }
-  });
-  reminders.forEach(async (reminder) => {
-    const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: user.email,
-      subject: 'Workout Reminder',
-      text: `Just a reminder to complete your workout scheduled for ${reminder.scheduledDate}. Go for it!`
-    };
-    await transporter.sendMail(mailOptions);
-    await ScheduledWorkout.findByIdAndUpdate(reminder._id, { 'reminder.reminderSent': true }).exec();
-  });
-<<<<<<< HEAD
+  try {
+    const now = new Date();
+    const reminders = await ScheduledWorkout.find({
+      'reminder.enabled': true,
+      'reminder.remindAt': { $lte: now },
+      'reminderSent': { $ne: true }
+    });
+
+    reminders.forEach(async (reminder) => {
+      const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: reminder.user.email,
+        subject: 'Workout Reminder',
+        text: `Just a reminder to complete your workout scheduled for ${reminder.scheduledDate}. Go for it!`
+      };
+
+      await transporter.sendMail(mailOptions);
+      await ScheduledWorkout.findByIdAndUpdate(reminder._id, { 'reminder.reminderSent': true }).exec();
+    });
+  } catch (error) {
+    console.error('Error running reminder cron job:', error);
+  }
 });
-
-
-
-=======
-  
-  cron.schedule('* * * * *', async () => {
-    try {
-      const now = new Date();
-      const reminders = await ScheduledWorkout.find({
-        'reminder.enabled': true,
-        'reminder.remindAt': { $lte: now },
-        'reminderSent': { $ne: true }
-      });
-  
-      reminders.forEach(async (reminder) => {
-        // Construct the email
-        const mailOptions = {
-          from: process.env.EMAIL_USER, // Use environment variable for sender email
-          to: user.email, // User's email
-          subject: 'Workout Reminder',
-          text: `Just a reminder to complete your workout scheduled for ${scheduledWorkout.scheduledDate}. Go for it!`
-        };        
-  
-        // Send the email
-        await transporter.sendMail(mailOptions);
-  
-        // Update reminder to mark it as sent
-        await ScheduledWorkout.findByIdAndUpdate(reminder._id, { 'reminder.reminderSent': true }).exec();
-      });
-    } catch (error) {
-      console.error('Error running reminder cron job:', error);
-    }
-  });
->>>>>>> 934f6093172a8c6505d60c97ff20a7eba713543b
