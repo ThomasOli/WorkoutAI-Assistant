@@ -27,7 +27,7 @@ export const HomeScreen = () => {
       {/* navbar */}
       <UserNavbar />
       <div className='home'>
-        <Grid2 container rowSpacing={10} columnSpacing={15} justify="center" alignItems="center" maxWidth={'100%'}>
+        <Grid2 container rowSpacing={10} columnSpacing={25} justify="center" alignItems="center" maxWidth={'100%'}>
           <Grid2 item xs={6}>
             {/* Chat with AI Button */}
             <Button variant="contained" style={{
