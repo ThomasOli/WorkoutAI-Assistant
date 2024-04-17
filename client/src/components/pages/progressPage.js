@@ -41,7 +41,7 @@ export const ProgressPage = () => {
       dateUpdated: '03/18/2024',
       checked: [false, false, false],  // status for each exercise
       isFavorite: false,
-      expand: false
+      isExpand: false
     },
     {
       id: 12,
@@ -55,7 +55,7 @@ export const ProgressPage = () => {
       dateUpdated: '03/18/2024',
       checked: [false, false, false],  // status for each exercise
       isFavorite: false,
-      expand: false
+      isExpand: false
     },
     {
       id: 293,
@@ -69,7 +69,7 @@ export const ProgressPage = () => {
       dateUpdated: '03/18/2024',
       checked: [false, false, false],  // status for each exercise
       isFavorite: false,
-      expand: false
+      isExpand: false
     }
     // Add more tasks as needed
   ]);
@@ -96,7 +96,7 @@ export const ProgressPage = () => {
 
   const handleCheckboxChange = (taskName, index) => {
     const updatedTasks = tasks.map((task) =>
-      task.workoutName === taskName ? { ...task, dateUpdated: new Date(), checked: [...task.checked.slice(0, index), !task.checked[index], ...task.checked.slice(index + 1)], expand: false } : task
+      task.workoutName === taskName ? { ...task, dateUpdated: new Date(), checked: [...task.checked.slice(0, index), !task.checked[index], ...task.checked.slice(index + 1)], isExpand: false } : task
     );
 
     setTasks(updatedTasks);
@@ -114,12 +114,12 @@ export const ProgressPage = () => {
 
   const handleFavoriteToggle = (taskName) => {
     const updatedTasks = tasks.map((task) =>
-      task.workoutName === taskName ? { ...task, isFavorite: !task.isFavorite, expand: false } : task
+      task.workoutName === taskName ? { ...task, isFavorite: !task.isFavorite, isExpand: false } : task
     );
     setTasks(updatedTasks);
 
     const updatedCompletedTasks = completedTasks.map((task) =>
-        task.workoutName === taskName ? { ...task, isFavorite: !task.isFavorite, expand: false } : task
+        task.workoutName === taskName ? { ...task, isFavorite: !task.isFavorite, isExpand: false } : task
     );
     setCompletedTasks(updatedCompletedTasks);
 
@@ -204,8 +204,8 @@ export const ProgressPage = () => {
     return (
       <Typography component="div" role="tabpanel" hidden={value !== tab}>
         {workouts.map((workout, index) => 
-          <Accordion key={workout.workoutName} disabled={false} expand={workout.expand}>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />} onClick={workout.expand = !workout.expand} aria-controls={`panel-${workout.workoutName}-content`} id={`panel-${workout.workoutName}-header`}>
+          <Accordion key={workout.workoutName} disabled={false} expand={workout.isExpand}>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />} onClick={() => workout.isExpand = !workout.isExpand} aria-controls={`panel-${workout.workoutName}-content`} id={`panel-${workout.workoutName}-header`}>
               <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
                 <IconButton onClick={() => handleFavoriteToggle(workout.workoutName)} sx={{
                   color: workout.isFavorite ? '#ffad41' : 'default', // Use 'inherit' for the default color
