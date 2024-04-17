@@ -29,7 +29,7 @@ export const ChatPage = () => {
   // update text box contents as user enters or removes text
   function updateInputField(e) {
     setUserTextInput(e.target.value);
-  }
+  };
 
   const handleInputChange = (e) => {
     setUserTextInput(e.target.value);
@@ -126,7 +126,7 @@ const handleSubmit = async (userID, botResponse) => {
     if (e.key === "Enter" && userTextInput.trim() !== "") {
       sendText();
     }
-  }
+  };
 
   // user input is stored in userTextInput variable
   // function to receive response by API

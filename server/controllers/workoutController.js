@@ -72,3 +72,15 @@ exports.markComplete = async (req, res) => {
     }
   };
   
+  exports.getWorkouts = async (req, res) => {
+    try {
+      const { userId } = req.query;
+      console.log("UserId for getWorkouts:", userId); // Log the userId
+      const workouts = await Workout.find({ userId }).sort({ date: -1 });
+      console.log("Workouts fetched:", workouts); // Log the fetched workouts
+      res.json(workouts);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  };
+  
