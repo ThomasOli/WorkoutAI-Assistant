@@ -8,6 +8,7 @@ import clear from "../images/deleteTextContents.png";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { API_KEY } from "../config2.js";
+import { useParams } from "react-router-dom";
 // require('dotenv').config({ path: "./config.env" });
 // const apiKey = process.env.API_KEY;
 import axios from "axios";
@@ -15,6 +16,7 @@ import axios from "axios";
 // /*import { TextField } from '@mui/material';*/
 
 export const ChatPage = () => {
+  const { userId } = useParams();
 
   /* functions can go here and they can be called in html element based classname/id, refer to chatGPT*/
   let recommended = false;
@@ -229,8 +231,7 @@ const handleSubmit = async (userID, botResponse) => {
     if(recommended){
       let parsedData = await parseResponse.json();
       setParse(parsedData.choices[0].message.content);
-      handleSubmit("123", parseBotMessage(parse))
-      console.log(parseBotMessage(parse))
+      handleSubmit(userId, parseBotMessage(parse))
       recommended = false;
 
     }
