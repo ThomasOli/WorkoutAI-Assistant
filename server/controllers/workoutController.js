@@ -68,7 +68,9 @@ exports.markComplete = async (req, res) => {
     try {
       const { userId } = req.query;
       console.log("UserId for getWorkouts:", userId);
-      const workouts = await Workout.find({ userId }).populate('userId').sort({ date: -1 });
+      const workouts = await Workout.find({ userId })
+        .populate('userId', 'name email') // Populate the User document with name and email fields
+        .sort({ date: -1 });
       console.log("Workouts fetched:", workouts);
       res.json(workouts);
     } catch (err) {
