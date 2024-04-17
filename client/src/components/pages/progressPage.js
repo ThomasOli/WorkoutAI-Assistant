@@ -21,10 +21,9 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import { format } from 'date-fns';
 import './progressPage.css';
 // import { set } from "mongoose";
-
-// have a fetch function, array.map and render everything would need to 
 
 export const ProgressPage = () => {
   const [value, setValue] = React.useState(0);
@@ -76,27 +75,15 @@ export const ProgressPage = () => {
   const [completedTasks, setCompletedTasks] = useState([]);
   const [favoriteTasks, setFavoriteTasks] = useState([]);
 
-  // const loadTask = async(e) => {
-  //   // axios.get('/api/workouts')
-  //   // Make a GET request to the API endpoint
-    // const test = axios.get('/')
-    // .then(response => {
-    //   // Handle successful response
-    //   console.log('Data:', response.data);
-    // })
-    // .catch(error => {
-    //   // Handle errors
-    //   console.error('Error fetching data:', error);
-    // });
-    // console.log(test);
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
   const handleCheckboxChange = (taskName, index) => {
+    const date = new Date();
+    const formattedDate = format(date, 'MM/dd/yyyy');
     const updatedTasks = tasks.map((task) =>
-      task.workoutName === taskName ? { ...task, dateUpdated: new Date(), checked: [...task.checked.slice(0, index), !task.checked[index], ...task.checked.slice(index + 1)], isExpand: false } : task
+      task.workoutName === taskName ? { ...task, dateUpdated: formattedDate, checked: [...task.checked.slice(0, index), !task.checked[index], ...task.checked.slice(index + 1)] } : task
     );
 
     setTasks(updatedTasks);
@@ -105,11 +92,18 @@ export const ProgressPage = () => {
     if (updatedTasks.find((task) => task.workoutName === taskName)?.checked.every((checkbox) => checkbox)) {
       // Move the task to the Completed tab
       const completedTask = updatedTasks.find((task) => task.workoutName === taskName);
+      completedTask.isExpand = false;
       setCompletedTasks([...completedTasks, completedTask]);
       
       // Remove the task from the In Progress tab
       setTasks(updatedTasks.filter((task) => task.workoutName !== taskName));
     }
+
+    // Update expanded accordion items
+    if (!expandedAccordions.includes(taskName)) {
+      setExpandedAccordions([...expandedAccordions, taskName]);
+    }
+    console.log(expandedAccordions);
   };
 
   const handleFavoriteToggle = (taskName) => {
@@ -138,6 +132,10 @@ export const ProgressPage = () => {
         } else {
             setFavoriteTasks(favoriteTasks.filter((task) => task.workoutName !== taskName));
         }
+    }
+    // Update expanded accordion items
+    if (!expandedAccordions.includes(taskName)) {
+      setExpandedAccordions([...expandedAccordions, taskName]);
     }
   };
 
@@ -187,6 +185,10 @@ export const ProgressPage = () => {
       setCopyError("Workout name can't be empty");
     } else if (tasks.some((task) => task.workoutName === newWorkoutName)) {
       setCopyError("A copy already exists under this name");
+    } else if (completedTasks.some((task) => task.workoutName === newWorkoutName)) {
+      setCopyError("A copy already exists under this name");
+    } else if (favoriteTasks.some((task) => task.workoutName === newWorkoutName)) {
+      setCopyError("A copy already exists under this name");
     } else {
       setCopyError("");
       // Do something with the new workout name
@@ -198,25 +200,38 @@ export const ProgressPage = () => {
     }
   };
 
+  const [expandedAccordions, setExpandedAccordions] = useState([]);
+
   const Workout = ({workouts, tab, showChecks}) => {
     // ISSUE: Accordion continues to collapses every time you click on it. NEED TO FIX THIS
     // Make array
+    workouts.map((workout) => console.log("Expand value ", workout.workoutName, ": ", workout.isExpand));
     return (
       <Typography component="div" role="tabpanel" hidden={value !== tab}>
         {workouts.map((workout, index) => 
-          <Accordion key={workout.workoutName} disabled={false} expand={workout.isExpand}>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />} onClick={() => workout.isExpand = !workout.isExpand} aria-controls={`panel-${workout.workoutName}-content`} id={`panel-${workout.workoutName}-header`}>
+        // expanded={expanded === data.id} onChange={handleExpand(data.id)} onChange={workout.isExpand = !workout.isExpand}
+        // expanded={workout.isExpand} onClick={toggleAccordion(tab, workout.workoutName)}
+        // aria-controls={`panel-${workout.workoutName}-content`}
+          <Accordion key={workout.workoutName} disabled={false} expanded={expandedAccordions.includes(workout.workoutName)}
+          onChange={() => {
+            setExpandedAccordions((prevExpanded) =>
+              prevExpanded.includes(workout.workoutName)
+                ? prevExpanded.filter((item) => item !== workout.workoutName)
+                : [...prevExpanded, workout.workoutName]
+            );
+          }}>
+            <AccordionSummary expandIcon={<ExpandMoreIcon/>} aria-controls="panel1a-content" id={`panel-${workout.workoutName}-header`}>
               <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                <IconButton onClick={() => handleFavoriteToggle(workout.workoutName)} sx={{
+                <IconButton onClick={(event) => {event.stopPropagation(); handleFavoriteToggle(workout.workoutName)}} sx={{
                   color: workout.isFavorite ? '#ffad41' : 'default', // Use 'inherit' for the default color
                 }}>
                   {workout.isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
                 </IconButton>
-                <Typography sx={{fontFamily: 'Questrial, sans-serif', fontSize: '24px', fontWeight: '600'}}>{workout.workoutName}</Typography>
-                <IconButton onClick={() => handleCopyTask(tab, workout.workoutName)}>
+                <Typography sx={{fontFamily: 'Questrial, sans-serif', fontSize: '24px', fontWeight: '600', width: '50%'}}>{workout.workoutName}</Typography>
+                <Typography sx={{fontSize: '12px', textAlign: 'right', width: '80%', fontFamily: 'Hind Vadodara, sans-serif', fontWeight: '300'}}>Date Created: {workout.dateCreated.toString()} &nbsp; &nbsp; &nbsp; &nbsp; Date Updated: {workout.dateUpdated.toString()}</Typography>
+                <IconButton onClick={(event) => {event.stopPropagation(); handleCopyTask(tab, workout.workoutName)}}>
                   <FileCopyIcon />
                 </IconButton>
-                <Typography sx={{fontSize: '12px', textAlign: 'right', width: '80%', fontFamily: 'Hind Vadodara, sans-serif', fontWeight: '300'}}>Date Created: {workout.dateCreated} &nbsp; &nbsp; &nbsp; &nbsp; Date Updated: {workout.dateUpdated}</Typography>
               </div>
             </AccordionSummary>
             <AccordionDetails>
@@ -239,7 +254,7 @@ export const ProgressPage = () => {
                           control={
                             <Checkbox
                               checked={checkbox}
-                              onChange={() => handleCheckboxChange(workout.workoutName, index)}
+                              onChange={(event) => {event.stopPropagation(); handleCheckboxChange(workout.workoutName, index)}}
                               disabled={false}
                             />
                           }
@@ -300,15 +315,21 @@ export const ProgressPage = () => {
       const taskToCopy = targetTab.find((task) => task.workoutName === ogWorkoutName);
       // updating the in progress tasks
       // copied task progress is reset and is not a favorite
+      const date = new Date();
+      const formattedDate = format(date, 'MM/dd/yyyy');
       if(taskToCopy) { // ensures taskToCopy is not empty
-        const copied = { ...taskToCopy, workoutName: newWorkoutName, checked: taskToCopy.checked.map(() => false), isFavorite: false, expand: false };
+        const copied = { ...taskToCopy, workoutName: newWorkoutName, checked: taskToCopy.checked.map(() => false), dateCreated: formattedDate, dateUpdated: formattedDate, isFavorite: false, expand: false };
         setTasks(prevTasks => [...prevTasks, copied]); // Use functional update form of setTasks
+        // Update expanded accordion items
+        if (!expandedAccordions.includes(copied.workoutName)) {
+          setExpandedAccordions([...expandedAccordions, copied.workoutName]);
+        }
       }
       // resets newWorkoutName to avoid infinite loops
       setNewWorkoutName('');
       setDialogSubmit(false);
     }
-  }, [dialogOpen, dialogSubmit, newWorkoutName, ogWorkoutName, targetTab]);
+  }, [dialogOpen, dialogSubmit, newWorkoutName, ogWorkoutName, targetTab, expandedAccordions]);
 
   return (
     <div className='progress-screen'>
@@ -316,12 +337,12 @@ export const ProgressPage = () => {
         <div className='overlay-background'>
           <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" sx={{
             "& .MuiTabs-indicator": {
-              backgroundColor: "#476e78", // Change green to the color you want
+              backgroundColor: "#102D3D",
             },
             "& .MuiTab-root.Mui-selected": {
-              color: '#476e78'
+              color: '#102D3D'
             },
-            backgroundColor: "#f1e4e8",
+            backgroundColor: "#F8C995",
           }}>
             <Tab label="In Progress" component={Link} to='/page/:id/in-progress' sx={{fontFamily: 'Source Sans Pro-Bold, monospace', fontSize: '24px', textTransform: 'none', color: '#666666'}}/>
             <Tab label="Completed" component={Link} to='/page/:id/completed' sx={{fontFamily: 'Source Sans Pro-Bold, monospace', fontSize: '24px', textTransform: 'none', color: '#666666'}}/>

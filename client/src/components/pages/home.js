@@ -96,7 +96,7 @@ export const HomeScreen = () => {
               color: '#000000',
               fontFamily: 'Source Sans Pro, monospace', 
               textTransform: 'none',
-              fontSize: '40px',
+              fontSize: '28px',
               textAlign: 'center',
               fontWeight: '700'
               }} onClick={handleOpen}>
