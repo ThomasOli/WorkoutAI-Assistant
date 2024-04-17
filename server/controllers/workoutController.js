@@ -1,22 +1,14 @@
 // Import the Workout model
 const Workout = require('../models/workoutModel');
 
-// Controller to get all workouts for a user
-exports.getWorkouts = async (req, res) => {
-  try {
-    // Assume a user ID is being passed as a query parameter
-    const { userId } = req.query;
-    const workouts = await Workout.find({ userId }).sort({ date: -1 });
-    res.json(workouts);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
-
 // Controller to add a new workout
 exports.addWorkout = async (req, res) => {
   try {
-    const newWorkout = new Workout(req.body);
+    const { userId, ...workoutData } = req.body;
+    const newWorkout = new Workout({
+      userId: mongoose.Types.ObjectId(userId),
+      ...workoutData,
+    });
     const savedWorkout = await newWorkout.save();
     res.status(201).json(savedWorkout);
   } catch (err) {
@@ -75,12 +67,36 @@ exports.markComplete = async (req, res) => {
   exports.getWorkouts = async (req, res) => {
     try {
       const { userId } = req.query;
-      console.log("UserId for getWorkouts:", userId); // Log the userId
-      const workouts = await Workout.find({ userId }).sort({ date: -1 });
-      console.log("Workouts fetched:", workouts); // Log the fetched workouts
+      console.log("UserId for getWorkouts:", userId);
+      const workouts = await Workout.find({ userId }).populate('userId').sort({ date: -1 });
+      console.log("Workouts fetched:", workouts);
       res.json(workouts);
     } catch (err) {
       res.status(500).json({ message: err.message });
     }
   };
   
+  exports.addExerciseToWorkout = async (req, res) => {
+    try {
+      const { workoutId } = req.params;
+      const { name, timeRep, checked } = req.body;
+  
+      const workout = await Workout.findById(workoutId);
+      if (!workout) {
+        return res.status(404).json({ message: "Workout not found" });
+      }
+  
+      const newExercise = {
+        name,
+        timeRep,
+        checked,
+      };
+  
+      workout.exercises.push(newExercise);
+      const updatedWorkout = await workout.save();
+  
+      res.json(updatedWorkout);
+    } catch (err) {
+      res.status(400).json({ message: err.message });
+    }
+  };
