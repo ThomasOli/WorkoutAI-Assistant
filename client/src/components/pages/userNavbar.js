@@ -14,14 +14,17 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import './userNavbar.css';
 
+
 const drawerWidth = 240;
-const navItems = [{key: 'Create Workout', link: '/chat/:id'}, {key: 'Workout Progress', link: '/progress/:id'}, {key: 'Profile', link: '/profile/:id'}, { key: 'Log Out', link: '/login'}];
 
 export const UserNavbar = (props) => {
+  const {userId} = useParams();
+  const navItems = [{key: 'Create Workout', link: `/chat/${userId}`}, {key: 'Workout Progress', link: `/progress/${userId}`}, {key: 'Profile', link: `/profile/${userId}`}, { key: 'Log Out', link: '/login'}];
+
   const { window } = props;
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
@@ -76,7 +79,7 @@ export const UserNavbar = (props) => {
           textTransform: 'none',
           backgroundColor: 'inherit'}}
           disableRipple
-          component={Link} to='/home/:id'>
+          component={Link} to={`/home/${userId}`}>
             Raise The Bar
           </Button>
         </Toolbar>
