@@ -6,12 +6,14 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import { Link } from "react-router-dom";
-
+import { useParams } from "react-router-dom";
 import UserNavbar from "./userNavbar";
 
 import "./home.css";
 
 export const HomeScreen = () => {
+  const { userId } = useParams();
+  console.log(userId);
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -42,7 +44,7 @@ export const HomeScreen = () => {
               fontSize: '40px',
               textAlign: 'center',
               fontWeight: '700'
-              }} component={Link} to='/chat/:id'>
+              }} component={Link} to={`/chat/${userId}`}>
               Create <br />
               Workout
             </Button>
@@ -61,7 +63,7 @@ export const HomeScreen = () => {
               fontSize: '40px',
               textAlign: 'center',
               fontWeight: '700'
-              }} component={Link} to='/progress/:id'>
+              }} component={Link}  to={`/progress/${userId}`}>
               Workout <br />
               Progress
             </Button>
@@ -80,7 +82,7 @@ export const HomeScreen = () => {
               fontSize: '40px',
               textAlign: 'center',
               fontWeight: '700'
-              }} component={Link} to='/profile/:id'>
+              }} component={Link} to={`/profile/${userId}`}>
               View <br />
               Profile
             </Button>

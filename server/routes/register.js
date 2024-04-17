@@ -7,6 +7,16 @@ const ObjectId = require("mongodb").ObjectId;
 // Assuming UserModel is your mongoose model for Users
 
 // Register new user with hashed password
+function generateUserId() {
+  const min = 100;
+  const max = 999999;
+  
+  // Generate a random number between min and max
+  const userId = Math.floor(Math.random() * (max - min + 1)) + min;
+  
+  return userId.toString(); // Convert the number to a string
+}
+
 registerRoutes.route("/register/add").post(async (req, response) => {
   let db_connect = dbo.getDb();
   const { email, password, ...otherDetails } = req.body;
@@ -26,7 +36,10 @@ registerRoutes.route("/register/add").post(async (req, response) => {
       return;
     }
 
+    const userId = generateUserId(); // Generate a random 3-digit userId
+    
     let myobj = {
+      userId, // Assign the generated userId
       email,
       ...otherDetails,
       password: hashedPassword,
@@ -42,7 +55,11 @@ registerRoutes.route("/register/add").post(async (req, response) => {
   });
 });
 
+
 // Login
+
+
+
 registerRoutes.route("/login").post(async (req, res) => {
   const { email, password } = req.body;
   let db_connect = dbo.getDb();
@@ -71,5 +88,9 @@ registerRoutes.route("/login").post(async (req, res) => {
     res.status(500).json({ error: "Error logging in user" });
   }
 });
+
+
+
+
 
 module.exports = registerRoutes;

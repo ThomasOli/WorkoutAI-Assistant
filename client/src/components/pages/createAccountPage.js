@@ -33,6 +33,7 @@ export const CreateAccountPage = () => {
     try {
       const response = await axios.post("http://localhost:5000/register/add", userData); // Adjust the URL as necessary
       console.log(response.data);
+      window.location.reload();
     } catch (error) {
       if (error.response && error.response.status === 400) {
         setErrorMessage('Please Sign In. User Already Exists!');
