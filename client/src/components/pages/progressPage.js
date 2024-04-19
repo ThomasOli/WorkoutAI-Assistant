@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { UserNavbar } from "./userNavbar";
@@ -31,10 +31,20 @@ export const ProgressPage = () => {
   const [tasks, setTasks] = useState([]);
   const [completedTasks, setCompletedTasks] = useState([]);
   const [favoriteTasks, setFavoriteTasks] = useState([]);
+  const [allTasks, setAllTasks] = useState([]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  const handleUpdates = async (userID) => {
+    try {
+      const response = await axios.post("http://localhost:5000/record/add", { allTasks, userID });
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error updating or adding workout:", error);
+    }
+  }
 
   const handleCheckboxChange = (taskName, index) => {
     const date = new Date();
@@ -59,7 +69,9 @@ export const ProgressPage = () => {
     if (!expandedAccordions.includes(taskName)) {
       setExpandedAccordions([...expandedAccordions, taskName]);
     }
-    // console.log(expandedAccordions);
+    
+    console.log('Testing Updating Database: ');
+    handleUpdates(tasks, userId);
   };
 
   const handleFavoriteToggle = (taskName) => {
@@ -159,15 +171,10 @@ export const ProgressPage = () => {
   const [expandedAccordions, setExpandedAccordions] = useState([]);
 
   const Workout = ({workouts, tab, showChecks}) => {
-    // ISSUE: Accordion continues to collapses every time you click on it. NEED TO FIX THIS
-    // Make array
-    // workouts.map((workout) => console.log("Expand value ", workout.workoutName, ": ", workout.isExpand));
+    // Sets up accordions per tab
     return (
       <Typography component="div" role="tabpanel" hidden={value !== tab}>
         {workouts.map((workout, index) => 
-        // expanded={expanded === data.id} onChange={handleExpand(data.id)} onChange={workout.isExpand = !workout.isExpand}
-        // expanded={workout.isExpand} onClick={toggleAccordion(tab, workout.workoutName)}
-        // aria-controls={`panel-${workout.workoutName}-content`}
           <Accordion key={workout.name} disabled={false} expanded={expandedAccordions.includes(workout.name)}
           onChange={() => {
             setExpandedAccordions((prevExpanded) =>
@@ -179,7 +186,7 @@ export const ProgressPage = () => {
             <AccordionSummary expandIcon={<ExpandMoreIcon/>} aria-controls="panel1a-content" id={`panel-${workout.name}-header`}>
               <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
                 <IconButton onClick={(event) => {event.stopPropagation(); handleFavoriteToggle(workout.name)}} sx={{
-                  color: workout.isFavorite ? '#ffad41' : 'default', // Use 'inherit' for the default color
+                  color: workout.isFavorite ? '#ffad41' : 'default',
                 }}>
                   {workout.isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
                 </IconButton>
@@ -229,64 +236,54 @@ export const ProgressPage = () => {
           </Accordion>
         )}
       </Typography>
-      // <div> testing </div>
     )
-  };
-
-  const setUser = (data) => {
-    console.log(data);
-    // setting user initial favorites
-    setTasks(data);
-    data.map((task) => setExpandedAccordions([...expandedAccordions, task.name]));
-
-    data.map((task) => task.isFavorite ? handleFavoriteToggle(task.name) : null);
-    data.map((task, index) => handleCheckboxChange(task.name, index));
-
-    console.log("User Tasks", tasks);
-    console.log("User Fav:", favoriteTasks);
-    console.log("User Completed:", completedTasks);
   };
 
   useEffect(() => {
     const fetchWorkouts = async () => {
       try {
         const res = await axios.get('http://localhost:5000/api/workouts', {params: {userId: userId}});
-        // const res1 = await axios.get('http://localhost:5000/api/completed', {userId});
         const workouts = res.data;
         console.log(workouts);
         console.log("Workout data:", res.data);
         console.log("On to Setting Tasks");
-        // setUser(res.data);
 
         // setting user data
         console.log(res.data);
-        // setting user initial favorites
+
+        // setting user tasks
+        setAllTasks(res.data);
         setTasks(res.data);
-        tasks.map((task) => setExpandedAccordions([...expandedAccordions, task.name]));
+      
+        // Setting User Favorites
+        const fav = [];
+        res.data.map((task) => task.isFavorite ?  fav.push(task) : null);
+        setFavoriteTasks(fav);
 
-        tasks.map((task) => task.isFavorite ? handleFavoriteToggle(task.name) : null);
-        tasks.map((task, index) => handleCheckboxChange(task.name, index));
-
-        console.log("User Tasks", tasks);
-        console.log("User Fav:", favoriteTasks);
-        console.log("User Completed:", completedTasks);
-        // console.log("Set Tasks", tasks);
-        // tasks.map((task) => handleFavoriteToggle(task.name));
-        // console.log("fav:", favoriteTasks);
-        // tasks.map((task, index) => handleCheckboxChange(task.name, index));
-        // console.log("completed: ", completedTasks);
-        // const test = await axios.get('http://localhost:5000/api/completed');
-        // console.log(test);
+        // Setting User's Completed Tasks to show their history
+        const comp = [];
+        res.data.map((task) => {
+          if (task.completed.every(value => value === true)) { 
+            comp.push(task); 
+            setTasks(res.data.filter((data) => data.name !== task.name))
+          }
+          return null;}
+        );
+        setCompletedTasks(comp);
       } catch (error) {
         console.error('Error fetching workouts:', error);
       }
     };
     fetchWorkouts();
+    console.log("User Tasks", tasks);
+    console.log("User Fav:", favoriteTasks);
+    console.log("User Accordions:", expandedAccordions);
+    console.log("User Completed:", completedTasks);
   }, [userId]);
 
   useEffect(() => {
     if(!dialogOpen && dialogSubmit && newWorkoutName !== '') {
-      const taskToCopy = targetTab.find((task) => task.workoutName === ogWorkoutName);
+      const taskToCopy = targetTab.find((task) => task.name === ogWorkoutName);
       // updating the in progress tasks
       // copied task progress is reset and is not a favorite
       const date = new Date();
@@ -294,6 +291,7 @@ export const ProgressPage = () => {
       if(taskToCopy) { // ensures taskToCopy is not empty
         const copied = { ...taskToCopy, name: newWorkoutName, competed: taskToCopy.completed.map(() => false), dateCreated: formattedDate, dateUpdated: formattedDate, isFavorite: false};
         setTasks(prevTasks => [...prevTasks, copied]); // Use functional update form of setTasks
+        handleUpdates(copied, userId);
         // Update expanded accordion items
         if (!expandedAccordions.includes(copied.workoutName)) {
           setExpandedAccordions([...expandedAccordions, copied.workoutName]);
@@ -303,7 +301,7 @@ export const ProgressPage = () => {
       setNewWorkoutName('');
       setDialogSubmit(false);
     }
-  }, [dialogOpen, dialogSubmit, newWorkoutName, ogWorkoutName, targetTab, expandedAccordions]);
+  }, [dialogOpen, dialogSubmit, newWorkoutName, ogWorkoutName, targetTab, expandedAccordions, userId]);
 
   return (
     <div className='progress-screen'>
