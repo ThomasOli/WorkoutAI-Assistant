@@ -259,19 +259,24 @@ const handleSubmit = async (userID, botResponse) => {
           <div className="user-name">
             {userData ? userData.name : 'User' /* display user's name from database */}
           </div>
-          <button className="home-button" 
-            component={Link} to='/home/:id'>
-              HOME
-          </button>
+          <Link to={`/home/${userId}`}>
+            <button className="home-button">
+                HOME
+            </button>
+          </Link>
           
-          <button className="plan-workout-button" 
-            component={Link} to='/profile/:id'> MY PROFILE
-          </button>
+          <Link to={`/profile/${userId}`}>
+            <button className="plan-workout-button"> 
+              MY PROFILE
+            </button>
+          </Link>
           
-          <button className="view-progress-button" 
-            component={Link} to="/progress/:id">
+          <Link to={`/progress/${userId}`}>
+            <button className="view-progress-button">
               VIEW PROGRESS
-          </button>
+            </button>
+          </Link>
+          
           
         </div>
         <svg

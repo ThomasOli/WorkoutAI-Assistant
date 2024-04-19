@@ -59,17 +59,27 @@ export const ProgressPage = () => {
     if (updatedTasks.find((task) => task.name === taskName)?.completed.every((checkbox) => checkbox)) {
       // Move the task to the Completed tab
       const completedTask = updatedTasks.find((task) => task.name === taskName);
+      console.log("Completed Task", completedTask);
       setCompletedTasks([...completedTasks, completedTask]);
       
       // Remove the task from the In Progress tab
       setTasks(updatedTasks.filter((task) => task.name !== taskName));
+      // Updating allTasks to show completed as all true
+      const all = allTasks.map((task) => task.name === completedTask.name ? {...completedTask} : task);
+      setAllTasks(all);
+    } else {
+      // updating allTasks to reflect with completed has been changed
+      const updatedTask = updatedTasks.find((task) => task.name === taskName);
+      const all = allTasks.map((task) => task.name === updatedTask.name ? {...updatedTask} : task);
+      setAllTasks(all);
     }
+
 
     // Update expanded accordion items
     if (!expandedAccordions.includes(taskName)) {
       setExpandedAccordions([...expandedAccordions, taskName]);
     }
-    
+
     console.log('Testing Updating Database: ');
     handleUpdates(tasks, userId);
   };
@@ -89,18 +99,23 @@ export const ProgressPage = () => {
     const favoriteTaskTwo = updatedCompletedTasks.find((task) => task.name === taskName);
 
     if (favoriteTask) {
-        if (favoriteTask.isFavorite) {
-            setFavoriteTasks([...favoriteTasks, favoriteTask]);
-        } else {
-            setFavoriteTasks(favoriteTasks.filter((task) => task.name !== taskName));
-        }
+      if (favoriteTask.isFavorite) {
+          setFavoriteTasks([...favoriteTasks, favoriteTask]);
+      } else {
+          setFavoriteTasks(favoriteTasks.filter((task) => task.name !== taskName));
+      }
+      const all = allTasks.map((task) => task.name === favoriteTask.name ? {...favoriteTask} : task);
+      setAllTasks(all);
     } else if (favoriteTaskTwo) {
-        if (favoriteTaskTwo.isFavorite) {
-            setFavoriteTasks([...favoriteTasks, favoriteTaskTwo]);
-        } else {
-            setFavoriteTasks(favoriteTasks.filter((task) => task.name !== taskName));
-        }
+      if (favoriteTaskTwo.isFavorite) {
+          setFavoriteTasks([...favoriteTasks, favoriteTaskTwo]);
+      } else {
+          setFavoriteTasks(favoriteTasks.filter((task) => task.name !== taskName));
+      }
+      const all = allTasks.map((task) => task.name === favoriteTaskTwo.name ? {...favoriteTaskTwo} : task);
+      setAllTasks(all);
     }
+    console.log("After Favoriting:", allTasks);
     // Update expanded accordion items
     if (!expandedAccordions.includes(taskName)) {
       setExpandedAccordions([...expandedAccordions, taskName]);
@@ -289,8 +304,9 @@ export const ProgressPage = () => {
       const date = new Date();
       const formattedDate = format(date, 'MM/dd/yyyy');
       if(taskToCopy) { // ensures taskToCopy is not empty
-        const copied = { ...taskToCopy, name: newWorkoutName, competed: taskToCopy.completed.map(() => false), dateCreated: formattedDate, dateUpdated: formattedDate, isFavorite: false};
+        const copied = { ...taskToCopy, name: newWorkoutName, completed: taskToCopy.completed.map(() => false), dateCreated: formattedDate, dateUpdated: formattedDate, isFavorite: false};
         setTasks(prevTasks => [...prevTasks, copied]); // Use functional update form of setTasks
+        setAllTasks(prev => [...prev, copied]);
         handleUpdates(copied, userId);
         // Update expanded accordion items
         if (!expandedAccordions.includes(copied.workoutName)) {
