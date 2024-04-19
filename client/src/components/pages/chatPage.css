@@ -37,6 +37,12 @@ body {
   padding-left: 20px;
 }
 
+/* .sidebar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} */
+
 .chat-section {
   width: 1199px;
   height: auto;
@@ -87,8 +93,9 @@ body {
 
 .chat-page-title {
   display: flex;
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 400;
   color: black;
   background: #e3e3e3;
   border-style: solid;
@@ -109,7 +116,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #d9d9d9;
+  /* background: #d9d9d9; */
+  background: rgb(161, 27, 161);
   border-radius: 50%;
   width: 130px;
   height: 130px;
@@ -123,9 +131,12 @@ body {
   display: flex;
   background: #d9d9d9;
   border-radius: 10px;
-  width: 200px;
-  height: 50px;
+  /* width: 200px;
+  height: 50px; */
+  height: 6%;
+  width: 53.5%;
   position: absolute;
+  /* left: 80px */
   left: 80px;
   top: 288px;
   justify-content: center;
@@ -190,7 +201,7 @@ body {
   background: #ffffff;
   width: 62%;
   height: 499px;
-  
+
   /* max-height: 500px; */
 
   position: absolute;

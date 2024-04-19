@@ -26,8 +26,9 @@ export const ChatPage = () => {
   // const [textFromGPT, setTextFromGPT] = useState("");
   // useState for modifying user messages and bot responses
   const [msgs, setMsg] = useState([]);
-  const [gpt, setGpt] = useState("")
-  const [parse, setParse] = useState("")
+  const [gpt, setGpt] = useState("");
+  const [parse, setParse] = useState("");
+  const [userData, setUserData] = useState("");
   // update text box contents as user enters or removes text
   function updateInputField(e) {
     setUserTextInput(e.target.value);
@@ -130,19 +131,16 @@ const handleSubmit = async (userID, botResponse) => {
     }
   }
 
-  // automatically scroll down to the most recent messages in the chat message board
-  function autoScrollDown() {
-    let messagesBoard = document.querySelector(".chat-message-board");
-    messagesBoard.current.scrollTop = messagesBoard.current.scrollHeight;
-  }
-
-  // attempt 2: automatically scroll down to most recent messages
   const chatMsgsRef = useRef(null);
-  useEffect(() => {
+  const scrollToBottom = () => {
     if (chatMsgsRef.current) {
       chatMsgsRef.current.scrollTop = chatMsgsRef.current.scrollHeight;
     }
-  }, [msgs])
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [msgs]);
 
   // user input is stored in userTextInput variable
   // function to receive response by API
@@ -253,31 +251,61 @@ const handleSubmit = async (userID, botResponse) => {
     }
    
   }
+
+  // automatically scroll down to the most recent messages in the chat message board
+  // function autoScrollDown() {
+  //   let messagesBoard = document.querySelector(".chat-message-board");
+  //   messagesBoard.current.scrollTop = messagesBoard.current.scrollHeight;
+  // }
+
+  // // attempt 2: automatically scroll down to most recent messages
+  // const chatMsgsRef = useRef(null);
+  // useEffect(() => {
+  //   if (chatMsgsRef.current) {
+  //     chatMsgsRef.current.scrollTop = chatMsgsRef.current.scrollHeight;
+  //   }
+  // }, [msgs])
+
+  // const { userId } = useParams();
+  // useEffect(() => {
+  //   // Fetch user data using userId
+  //   const fetchUserData = async () => {
+  //     try {
+  //       const response = await axios.get("http://localhost:5000/api/workouts", {
+  //         params: {
+  //           userId: userId
+  //         }
+  //       }); // Replace with your API endpoint
+  //       setUserData(response.data);
+  //       console.log(response);
+  //     } 
+  //     catch (error) {
+  //       console.error('Error fetching user data:', error);
+  //     }
+  //   };
+  //   fetchUserData();
+  // }, [userId]);
+
+  // <h1>Welcome, {userData ? userData.name : 'User'}!</h1>
   
-
-
-  
-  
-
-  /* create functions for placing user and bot messages in chat bubbles
-     in the chat box. (Partially Complete) */
-
-
 
   return (
     <>
       <div className="chat-page-layout-design">
         <div className="sidebar">
-          <div className="user-profile-image">Profile Picture {/* get profile picture from database */}</div>
+          <div className="user-profile-image"></div>
           <div className="user-name">
-            FirstName LastName {/* get username from database */}
+            {userData ? userData.name : 'User'}{/* get username from database */}
           </div>
           <button className="home-button" 
             component={Link} to='/home/:id'>
               HOME
           </button>
           
-          <button className="plan-workout-button">PLAN A WORKOUT {/* redirect to workout planning page */}</button>
+          <button className="plan-workout-button" 
+            component={Link} to='/profile/:id'> MY PROFILE
+          </button>
+          
           <button className="view-progress-button" 
             component={Link} to="/progress/:id">
               VIEW PROGRESS
@@ -302,7 +330,7 @@ const handleSubmit = async (userID, botResponse) => {
         <div className="identification-of-ai-section"></div>
         <img className="raise-the-bar-chat-icon" alt="Chat Icon" src={logo}></img>
         <div className="chat-page-title">CHAT</div>
-        <div className="chat-message-board">
+        <div className="chat-message-board" ref={chatMsgsRef}>
           <div ref={chatMsgsRef} className="chat-messages-section">
             {/* {msgs.map((msg, index) => (
               <div key={index} className={`message ${msg.sender}`}>
