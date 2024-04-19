@@ -10,6 +10,7 @@ import { useState } from "react";
 import { useRef } from "react";
 import { useEffect } from "react";
 import { API_KEY } from "../config2.js";
+import { useParams } from "react-router-dom";
 // require('dotenv').config({ path: "./config.env" });
 // const apiKey = process.env.API_KEY;
 import axios from "axios";
@@ -17,6 +18,7 @@ import axios from "axios";
 // /*import { TextField } from '@mui/material';*/
 
 export const ChatPage = () => {
+  const { userId } = useParams();
 
   /* functions can go here and they can be called in html element based classname/id, refer to chatGPT*/
   let recommended = false;
@@ -32,7 +34,7 @@ export const ChatPage = () => {
   // update text box contents as user enters or removes text
   function updateInputField(e) {
     setUserTextInput(e.target.value);
-  }
+  };
 
   const handleInputChange = (e) => {
     setUserTextInput(e.target.value);
@@ -129,7 +131,7 @@ const handleSubmit = async (userID, botResponse) => {
     if (e.key === "Enter" && userTextInput.trim() !== "") {
       sendText();
     }
-  }
+  };
 
   const chatMsgsRef = useRef(null);
   const scrollToBottom = () => {
@@ -244,8 +246,7 @@ const handleSubmit = async (userID, botResponse) => {
     if(recommended){
       let parsedData = await parseResponse.json();
       setParse(parsedData.choices[0].message.content);
-      handleSubmit("123", parseBotMessage(parse))
-      console.log(parseBotMessage(parse))
+      handleSubmit(userId, parseBotMessage(parse))
       recommended = false;
 
     }

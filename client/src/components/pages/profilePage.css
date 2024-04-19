@@ -1,12 +1,32 @@
- .profile-page {
-    background-color: transparent;
-    background-image: url('../images/glassFrameFullBackground.png');
-    background-repeat: no-repeat;
-    background-size: cover;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    min-height: 100vh;
-    height: auto;
-    width: auto;
- }
+.profile-page {
+   background-color: transparent;
+   background-image: url('../images/glassFrameFullBackground.png');
+   background-repeat: no-repeat;
+   background-size: cover;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+   position: relative;
+   min-height: 100vh;
+   overflow: auto;
+   z-index: 0;
+}
+
+.profile-page .nav-pad {
+  padding-top: 90px;
+  position: absolute;
+  top: 0px;
+}
+
+.profile-page .profile {
+  background-color: #ffffff;
+  position: absolute;
+  padding-top: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
+  min-height: 80%;
+  height: fit-content;
+  width: 100%;
+  top: 90px;
+}
