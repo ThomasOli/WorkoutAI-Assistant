@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
+import { useParams } from "react-router-dom";
 import { UserNavbar } from "./userNavbar";
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -26,51 +26,52 @@ import './progressPage.css';
 // import { set } from "mongoose";
 
 export const ProgressPage = () => {
+  const { userId } = useParams();
   const [value, setValue] = React.useState(0);
   const [tasks, setTasks] = useState([
-    {
-      id: 3,
-      workoutName: 'Workout 1',
-      exercises: ['Exercise A', 'Exercise B', 'Exercise C'],
-      timeRep: [30, 15, '45 seconds'],  // representing time in seconds or reps per exercise
-      sets: [3, 3, 3], // number of times you repeat the workout
-      weightRec: ['30%', '50%', 'no weight'],
-      type: ['strength', 'core', 'cardio'],
-      dateCreated: '03/18/2024',
-      dateUpdated: '03/18/2024',
-      checked: [false, false, false],  // status for each exercise
-      isFavorite: false,
-      isExpand: false
-    },
-    {
-      id: 12,
-      workoutName: 'Workout 2',
-      exercises: ['Exercise X', 'Exercise Y', 'Exercise Z'],
-      timeRep: [60, 12, 30],  // representing time in seconds or reps per exercise
-      sets: [3, 3, 3], // number of times you repeat the workout
-      weightRec: ['30%', '50%', 'no weight'],
-      type: ['strength', 'core', 'cardio'],
-      dateCreated: '03/18/2024',
-      dateUpdated: '03/18/2024',
-      checked: [false, false, false],  // status for each exercise
-      isFavorite: false,
-      isExpand: false
-    },
-    {
-      id: 293,
-      workoutName: 'Workout 3',
-      exercises: ['Exercise S', 'Exercise T', 'Exercise R'],
-      timeRep: [3, 1, '30 seconds'],  // representing time in seconds or reps per exercise
-      sets: [3, 3, 3], // number of times you repeat the workout
-      weightRec: ['30%', '50%', 'no weight'],
-      type: ['strength', 'core', 'cardio'],
-      dateCreated: '03/18/2024',
-      dateUpdated: '03/18/2024',
-      checked: [false, false, false],  // status for each exercise
-      isFavorite: false,
-      isExpand: false
-    }
-    // Add more tasks as needed
+    // {
+    //   id: 3,
+    //   workoutName: 'Workout 1',
+    //   exercises: ['Exercise A', 'Exercise B', 'Exercise C'],
+    //   timeRep: [30, 15, '45 seconds'],  // representing time in seconds or reps per exercise
+    //   sets: [3, 3, 3], // number of times you repeat the workout
+    //   weightRec: ['30%', '50%', 'no weight'],
+    //   type: ['strength', 'core', 'cardio'],
+    //   dateCreated: '03/18/2024',
+    //   dateUpdated: '03/18/2024',
+    //   checked: [false, false, false],  // status for each exercise
+    //   isFavorite: false,
+    //   isExpand: false
+    // },
+    // {
+    //   id: 12,
+    //   workoutName: 'Workout 2',
+    //   exercises: ['Exercise X', 'Exercise Y', 'Exercise Z'],
+    //   timeRep: [60, 12, 30],  // representing time in seconds or reps per exercise
+    //   sets: [3, 3, 3], // number of times you repeat the workout
+    //   weightRec: ['30%', '50%', 'no weight'],
+    //   type: ['strength', 'core', 'cardio'],
+    //   dateCreated: '03/18/2024',
+    //   dateUpdated: '03/18/2024',
+    //   checked: [false, false, false],  // status for each exercise
+    //   isFavorite: false,
+    //   isExpand: false
+    // },
+    // {
+    //   id: 293,
+    //   workoutName: 'Workout 3',
+    //   exercises: ['Exercise S', 'Exercise T', 'Exercise R'],
+    //   timeRep: [3, 1, '30 seconds'],  // representing time in seconds or reps per exercise
+    //   sets: [3, 3, 3], // number of times you repeat the workout
+    //   weightRec: ['30%', '50%', 'no weight'],
+    //   type: ['strength', 'core', 'cardio'],
+    //   dateCreated: '03/18/2024',
+    //   dateUpdated: '03/18/2024',
+    //   checked: [false, false, false],  // status for each exercise
+    //   isFavorite: false,
+    //   isExpand: false
+    // }
+    // // Add more tasks as needed
   ]);
   const [completedTasks, setCompletedTasks] = useState([]);
   const [favoriteTasks, setFavoriteTasks] = useState([]);
@@ -279,11 +280,8 @@ export const ProgressPage = () => {
   useEffect(() => {
     const fetchWorkouts = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/workouts', {
-          params: {
-            userId: "123"
-          }
-        });
+        const res = await axios.get('http://localhost:5000/api/workouts', {userId: userId});
+        // const res1 = await axios.get('http://localhost:5000/api/completed', {userId});
         console.log("Workout data:", res.data);
         console.log("response: ", res);
         // setTasks(res.exercises);
@@ -308,7 +306,7 @@ export const ProgressPage = () => {
       // }
     };
     fetchWorkouts();
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
     if(!dialogOpen && dialogSubmit && newWorkoutName !== '') {
