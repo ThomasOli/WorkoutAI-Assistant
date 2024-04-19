@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { UserNavbar } from "./userNavbar";
@@ -59,7 +59,7 @@ export const ProgressPage = () => {
     if (!expandedAccordions.includes(taskName)) {
       setExpandedAccordions([...expandedAccordions, taskName]);
     }
-    console.log(expandedAccordions);
+    // console.log(expandedAccordions);
   };
 
   const handleFavoriteToggle = (taskName) => {
@@ -234,14 +234,18 @@ export const ProgressPage = () => {
   };
 
   const setUser = (data) => {
+    console.log(data);
     // setting user initial favorites
-    data.map((task) => task.isFavorite ? setFavoriteTasks([...favoriteTasks, task]) : null);
-    // data.map((task) => task.completed.every(value => value === true) ? setCompletedTasks([...completedTasks, task]) : setTasks(...tasks, task));
+    setTasks(data);
     data.map((task) => setExpandedAccordions([...expandedAccordions, task.name]));
+
+    data.map((task) => task.isFavorite ? handleFavoriteToggle(task.name) : null);
+    data.map((task, index) => handleCheckboxChange(task.name, index));
+
     console.log("User Tasks", tasks);
     console.log("User Fav:", favoriteTasks);
     console.log("User Completed:", completedTasks);
-  }
+  };
 
   useEffect(() => {
     const fetchWorkouts = async () => {
@@ -252,7 +256,20 @@ export const ProgressPage = () => {
         console.log(workouts);
         console.log("Workout data:", res.data);
         console.log("On to Setting Tasks");
+        // setUser(res.data);
+
+        // setting user data
+        console.log(res.data);
+        // setting user initial favorites
         setTasks(res.data);
+        tasks.map((task) => setExpandedAccordions([...expandedAccordions, task.name]));
+
+        tasks.map((task) => task.isFavorite ? handleFavoriteToggle(task.name) : null);
+        tasks.map((task, index) => handleCheckboxChange(task.name, index));
+
+        console.log("User Tasks", tasks);
+        console.log("User Fav:", favoriteTasks);
+        console.log("User Completed:", completedTasks);
         // console.log("Set Tasks", tasks);
         // tasks.map((task) => handleFavoriteToggle(task.name));
         // console.log("fav:", favoriteTasks);
@@ -263,20 +280,6 @@ export const ProgressPage = () => {
       } catch (error) {
         console.error('Error fetching workouts:', error);
       }
-
-      // try {
-      //   const res = await axios.get('http://localhost:5000/api/workouts/completed', {
-      //     params: {
-      //       UserId: '123'
-      //     }
-      //   });
-      //   console.log("Completed Workout data:", res.Workout);
-      //   setCompletedTasks(res.Workout);
-      //   console.log("checking completed")
-      //   console.log(completedTasks);
-      // } catch (error) {
-      //   console.error('Error fetching completed workouts:', error);
-      // }
     };
     fetchWorkouts();
   }, [userId]);
