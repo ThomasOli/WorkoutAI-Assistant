@@ -28,51 +28,7 @@ import './progressPage.css';
 export const ProgressPage = () => {
   const { userId } = useParams();
   const [value, setValue] = React.useState(0);
-  const [tasks, setTasks] = useState([
-    // {
-    //   id: 3,
-    //   workoutName: 'Workout 1',
-    //   exercises: ['Exercise A', 'Exercise B', 'Exercise C'],
-    //   timeRep: [30, 15, '45 seconds'],  // representing time in seconds or reps per exercise
-    //   sets: [3, 3, 3], // number of times you repeat the workout
-    //   weightRec: ['30%', '50%', 'no weight'],
-    //   type: ['strength', 'core', 'cardio'],
-    //   dateCreated: '03/18/2024',
-    //   dateUpdated: '03/18/2024',
-    //   checked: [false, false, false],  // status for each exercise
-    //   isFavorite: false,
-    //   isExpand: false
-    // },
-    // {
-    //   id: 12,
-    //   workoutName: 'Workout 2',
-    //   exercises: ['Exercise X', 'Exercise Y', 'Exercise Z'],
-    //   timeRep: [60, 12, 30],  // representing time in seconds or reps per exercise
-    //   sets: [3, 3, 3], // number of times you repeat the workout
-    //   weightRec: ['30%', '50%', 'no weight'],
-    //   type: ['strength', 'core', 'cardio'],
-    //   dateCreated: '03/18/2024',
-    //   dateUpdated: '03/18/2024',
-    //   checked: [false, false, false],  // status for each exercise
-    //   isFavorite: false,
-    //   isExpand: false
-    // },
-    // {
-    //   id: 293,
-    //   workoutName: 'Workout 3',
-    //   exercises: ['Exercise S', 'Exercise T', 'Exercise R'],
-    //   timeRep: [3, 1, '30 seconds'],  // representing time in seconds or reps per exercise
-    //   sets: [3, 3, 3], // number of times you repeat the workout
-    //   weightRec: ['30%', '50%', 'no weight'],
-    //   type: ['strength', 'core', 'cardio'],
-    //   dateCreated: '03/18/2024',
-    //   dateUpdated: '03/18/2024',
-    //   checked: [false, false, false],  // status for each exercise
-    //   isFavorite: false,
-    //   isExpand: false
-    // }
-    // // Add more tasks as needed
-  ]);
+  const [tasks, setTasks] = useState([]);
   const [completedTasks, setCompletedTasks] = useState([]);
   const [favoriteTasks, setFavoriteTasks] = useState([]);
 
@@ -84,20 +40,19 @@ export const ProgressPage = () => {
     const date = new Date();
     const formattedDate = format(date, 'MM/dd/yyyy');
     const updatedTasks = tasks.map((task) =>
-      task.workoutName === taskName ? { ...task, dateUpdated: formattedDate, checked: [...task.checked.slice(0, index), !task.checked[index], ...task.checked.slice(index + 1)] } : task
+      task.name === taskName ? { ...task, dateUpdated: formattedDate, completed: [...task.completed.slice(0, index), !task.completed[index], ...task.completed.slice(index + 1)] } : task
     );
 
     setTasks(updatedTasks);
 
     // Check if all checkboxes for the task are marked
-    if (updatedTasks.find((task) => task.workoutName === taskName)?.checked.every((checkbox) => checkbox)) {
+    if (updatedTasks.find((task) => task.name === taskName)?.completed.every((checkbox) => checkbox)) {
       // Move the task to the Completed tab
-      const completedTask = updatedTasks.find((task) => task.workoutName === taskName);
-      completedTask.isExpand = false;
+      const completedTask = updatedTasks.find((task) => task.name === taskName);
       setCompletedTasks([...completedTasks, completedTask]);
       
       // Remove the task from the In Progress tab
-      setTasks(updatedTasks.filter((task) => task.workoutName !== taskName));
+      setTasks(updatedTasks.filter((task) => task.name !== taskName));
     }
 
     // Update expanded accordion items
@@ -109,29 +64,29 @@ export const ProgressPage = () => {
 
   const handleFavoriteToggle = (taskName) => {
     const updatedTasks = tasks.map((task) =>
-      task.workoutName === taskName ? { ...task, isFavorite: !task.isFavorite, isExpand: false } : task
+      task.name === taskName ? { ...task, isFavorite: !task.isFavorite } : task
     );
     setTasks(updatedTasks);
 
     const updatedCompletedTasks = completedTasks.map((task) =>
-        task.workoutName === taskName ? { ...task, isFavorite: !task.isFavorite, isExpand: false } : task
+        task.name === taskName ? { ...task, isFavorite: !task.isFavorite } : task
     );
     setCompletedTasks(updatedCompletedTasks);
 
-    const favoriteTask = updatedTasks.find((task) => task.workoutName === taskName);
-    const favoriteTaskTwo = updatedCompletedTasks.find((task) => task.workoutName === taskName);
+    const favoriteTask = updatedTasks.find((task) => task.name === taskName);
+    const favoriteTaskTwo = updatedCompletedTasks.find((task) => task.name === taskName);
 
     if (favoriteTask) {
         if (favoriteTask.isFavorite) {
             setFavoriteTasks([...favoriteTasks, favoriteTask]);
         } else {
-            setFavoriteTasks(favoriteTasks.filter((task) => task.workoutName !== taskName));
+            setFavoriteTasks(favoriteTasks.filter((task) => task.name !== taskName));
         }
     } else if (favoriteTaskTwo) {
         if (favoriteTaskTwo.isFavorite) {
             setFavoriteTasks([...favoriteTasks, favoriteTaskTwo]);
         } else {
-            setFavoriteTasks(favoriteTasks.filter((task) => task.workoutName !== taskName));
+            setFavoriteTasks(favoriteTasks.filter((task) => task.name !== taskName));
         }
     }
     // Update expanded accordion items
@@ -184,11 +139,11 @@ export const ProgressPage = () => {
   const handleSubmitNewWorkoutName = () => {
     if(newWorkoutName === "") {
       setCopyError("Workout name can't be empty");
-    } else if (tasks.some((task) => task.workoutName === newWorkoutName)) {
+    } else if (tasks.some((task) => task.name === newWorkoutName)) {
       setCopyError("A copy already exists under this name");
-    } else if (completedTasks.some((task) => task.workoutName === newWorkoutName)) {
+    } else if (completedTasks.some((task) => task.name === newWorkoutName)) {
       setCopyError("A copy already exists under this name");
-    } else if (favoriteTasks.some((task) => task.workoutName === newWorkoutName)) {
+    } else if (favoriteTasks.some((task) => task.name === newWorkoutName)) {
       setCopyError("A copy already exists under this name");
     } else {
       setCopyError("");
@@ -206,31 +161,31 @@ export const ProgressPage = () => {
   const Workout = ({workouts, tab, showChecks}) => {
     // ISSUE: Accordion continues to collapses every time you click on it. NEED TO FIX THIS
     // Make array
-    workouts.map((workout) => console.log("Expand value ", workout.workoutName, ": ", workout.isExpand));
+    // workouts.map((workout) => console.log("Expand value ", workout.workoutName, ": ", workout.isExpand));
     return (
       <Typography component="div" role="tabpanel" hidden={value !== tab}>
         {workouts.map((workout, index) => 
         // expanded={expanded === data.id} onChange={handleExpand(data.id)} onChange={workout.isExpand = !workout.isExpand}
         // expanded={workout.isExpand} onClick={toggleAccordion(tab, workout.workoutName)}
         // aria-controls={`panel-${workout.workoutName}-content`}
-          <Accordion key={workout.workoutName} disabled={false} expanded={expandedAccordions.includes(workout.workoutName)}
+          <Accordion key={workout.name} disabled={false} expanded={expandedAccordions.includes(workout.name)}
           onChange={() => {
             setExpandedAccordions((prevExpanded) =>
-              prevExpanded.includes(workout.workoutName)
-                ? prevExpanded.filter((item) => item !== workout.workoutName)
-                : [...prevExpanded, workout.workoutName]
+              prevExpanded.includes(workout.name)
+                ? prevExpanded.filter((item) => item !== workout.name)
+                : [...prevExpanded, workout.name]
             );
           }}>
-            <AccordionSummary expandIcon={<ExpandMoreIcon/>} aria-controls="panel1a-content" id={`panel-${workout.workoutName}-header`}>
+            <AccordionSummary expandIcon={<ExpandMoreIcon/>} aria-controls="panel1a-content" id={`panel-${workout.name}-header`}>
               <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                <IconButton onClick={(event) => {event.stopPropagation(); handleFavoriteToggle(workout.workoutName)}} sx={{
+                <IconButton onClick={(event) => {event.stopPropagation(); handleFavoriteToggle(workout.name)}} sx={{
                   color: workout.isFavorite ? '#ffad41' : 'default', // Use 'inherit' for the default color
                 }}>
                   {workout.isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
                 </IconButton>
-                <Typography sx={{fontFamily: 'Questrial, sans-serif', fontSize: '24px', fontWeight: '600', width: '50%'}}>{workout.workoutName}</Typography>
+                <Typography sx={{fontFamily: 'Questrial, sans-serif', fontSize: '24px', fontWeight: '600', width: '50%'}}>{workout.name}</Typography>
                 <Typography sx={{fontSize: '12px', textAlign: 'right', width: '80%', fontFamily: 'Hind Vadodara, sans-serif', fontWeight: '300'}}>Date Created: {workout.dateCreated.toString()} &nbsp; &nbsp; &nbsp; &nbsp; Date Updated: {workout.dateUpdated.toString()}</Typography>
-                <IconButton onClick={(event) => {event.stopPropagation(); handleCopyTask(tab, workout.workoutName)}}>
+                <IconButton onClick={(event) => {event.stopPropagation(); handleCopyTask(tab, workout.name)}}>
                   <FileCopyIcon />
                 </IconButton>
               </div>
@@ -240,32 +195,32 @@ export const ProgressPage = () => {
                 <thead>
                   <tr>
                     {showChecks && <th style={{width: '10%', textAlign: 'left', fontFamily: 'Questrial, sans-serif', fontSize: '20px', fontWeight: '500'}}>Progress</th>}
-                    <th style={{width: '30%', textAlign: 'left', paddingLeft: '10px', fontFamily: 'Questrial, sans-serif', fontSize: '20px', fontWeight: '500'}}>Exercise</th>
+                    <th style={{width: '25%', textAlign: 'left', paddingLeft: '10px', fontFamily: 'Questrial, sans-serif', fontSize: '20px', fontWeight: '500'}}>Exercise</th>
                     <th style={{width: '15%', textAlign: 'left', paddingLeft: '10px', fontFamily: 'Questrial, sans-serif', fontSize: '20px', fontWeight: '500'}}>Reps/Time</th>
                     <th style={{width: '15%', textAlign: 'left', paddingLeft: '10px', fontFamily: 'Questrial, sans-serif', fontSize: '20px', fontWeight: '500'}}>Sets</th>
-                    <th style={{width: '30%', textAlign: 'left', paddingLeft: '10px',  fontFamily: 'Questrial, sans-serif', fontSize: '20px', fontWeight: '500'}}>Weight Recommendation</th>
-                    <th style={{width: '30%', textAlign: 'left', paddingLeft: '10px',  fontFamily: 'Questrial, sans-serif', fontSize: '20px', fontWeight: '500'}}>Type</th>
+                    <th style={{width: '15%', textAlign: 'left', paddingLeft: '10px',  fontFamily: 'Questrial, sans-serif', fontSize: '20px', fontWeight: '500'}}>Rest</th>
+                    <th style={{width: '30%', textAlign: 'left', paddingLeft: '10px',  fontFamily: 'Questrial, sans-serif', fontSize: '20px', fontWeight: '500'}}>Notes</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {workout.checked.map((checkbox, index) => (
+                  {workout.completed.map((checkbox, index) => (
                     <tr key={index}>
                       {showChecks && <td style={{width: '10%'}}>
                         <FormControlLabel
                           control={
                             <Checkbox
                               checked={checkbox}
-                              onChange={(event) => {event.stopPropagation(); handleCheckboxChange(workout.workoutName, index)}}
+                              onChange={(event) => {event.stopPropagation(); handleCheckboxChange(workout.name, index)}}
                               disabled={false}
                             />
                           }
                         />
                       </td>}
-                      <td style={{paddingLeft: '10px', fontFamily: 'Hind Vadodara, sans-serif', fontWeight: '300', fontSize: '18px'}}>{workout.exercises[index]}</td>
-                      <td style={{paddingLeft: '10px', fontFamily: 'Hind Vadodara, sans-serif', fontWeight: '300', fontSize: '18px'}}>{workout.timeRep[index]}</td>
-                      <td style={{paddingLeft: '10px', fontFamily: 'Hind Vadodara, sans-serif', fontWeight: '300', fontSize: '18px'}}>{workout.sets[index]}</td>
-                      <td style={{paddingLeft: '10px', fontFamily: 'Hind Vadodara, sans-serif', fontWeight: '300', fontSize: '18px'}}>{workout.weightRec[index]}</td>
-                      <td style={{paddingLeft: '10px', fontFamily: 'Hind Vadodara, sans-serif', fontWeight: '300', fontSize: '18px'}}>{workout.type[index]}</td>
+                      <td style={{paddingLeft: '10px', fontFamily: 'Hind Vadodara, sans-serif', fontWeight: '300', fontSize: '18px'}}>{workout.exercises[index].name}</td>
+                      <td style={{paddingLeft: '10px', fontFamily: 'Hind Vadodara, sans-serif', fontWeight: '300', fontSize: '18px'}}>{workout.exercises[index].reps}</td>
+                      <td style={{paddingLeft: '10px', fontFamily: 'Hind Vadodara, sans-serif', fontWeight: '300', fontSize: '18px'}}>{workout.exercises[index].sets}</td>
+                      <td style={{paddingLeft: '10px', fontFamily: 'Hind Vadodara, sans-serif', fontWeight: '300', fontSize: '18px'}}>{workout.exercises[index].rest}</td>
+                      <td style={{paddingLeft: '10px', fontFamily: 'Hind Vadodara, sans-serif', fontWeight: '300', fontSize: '14px'}}>{workout.exercises[index].additional}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -274,19 +229,37 @@ export const ProgressPage = () => {
           </Accordion>
         )}
       </Typography>
+      // <div> testing </div>
     )
   };
+
+  const setUser = (data) => {
+    // setting user initial favorites
+    data.map((task) => task.isFavorite ? setFavoriteTasks([...favoriteTasks, task]) : null);
+    // data.map((task) => task.completed.every(value => value === true) ? setCompletedTasks([...completedTasks, task]) : setTasks(...tasks, task));
+    data.map((task) => setExpandedAccordions([...expandedAccordions, task.name]));
+    console.log("User Tasks", tasks);
+    console.log("User Fav:", favoriteTasks);
+    console.log("User Completed:", completedTasks);
+  }
 
   useEffect(() => {
     const fetchWorkouts = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/workouts', {userId: userId});
+        const res = await axios.get('http://localhost:5000/api/workouts', {params: {userId: userId}});
         // const res1 = await axios.get('http://localhost:5000/api/completed', {userId});
+        const workouts = res.data;
+        console.log(workouts);
         console.log("Workout data:", res.data);
-        console.log("response: ", res);
-        // setTasks(res.exercises);
-        // console.log("checking tasks")
-        // console.log(tasks);
+        console.log("On to Setting Tasks");
+        setTasks(res.data);
+        // console.log("Set Tasks", tasks);
+        // tasks.map((task) => handleFavoriteToggle(task.name));
+        // console.log("fav:", favoriteTasks);
+        // tasks.map((task, index) => handleCheckboxChange(task.name, index));
+        // console.log("completed: ", completedTasks);
+        // const test = await axios.get('http://localhost:5000/api/completed');
+        // console.log(test);
       } catch (error) {
         console.error('Error fetching workouts:', error);
       }
@@ -316,7 +289,7 @@ export const ProgressPage = () => {
       const date = new Date();
       const formattedDate = format(date, 'MM/dd/yyyy');
       if(taskToCopy) { // ensures taskToCopy is not empty
-        const copied = { ...taskToCopy, workoutName: newWorkoutName, checked: taskToCopy.checked.map(() => false), dateCreated: formattedDate, dateUpdated: formattedDate, isFavorite: false, expand: false };
+        const copied = { ...taskToCopy, name: newWorkoutName, competed: taskToCopy.completed.map(() => false), dateCreated: formattedDate, dateUpdated: formattedDate, isFavorite: false};
         setTasks(prevTasks => [...prevTasks, copied]); // Use functional update form of setTasks
         // Update expanded accordion items
         if (!expandedAccordions.includes(copied.workoutName)) {
