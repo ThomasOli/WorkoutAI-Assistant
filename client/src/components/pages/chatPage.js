@@ -7,6 +7,8 @@ import send from "../images/sendMessage.png";
 import clear from "../images/deleteTextContents.png";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useRef } from "react";
+import { useEffect } from "react";
 import { API_KEY } from "../config2.js";
 import { useParams } from "react-router-dom";
 // require('dotenv').config({ path: "./config.env" });
@@ -18,16 +20,15 @@ import axios from "axios";
 export const ChatPage = () => {
   const { userId } = useParams();
 
-  /* functions can go here and they can be called in html element based classname/id, refer to chatGPT*/
   let recommended = false;
   // initially set user input content to an empty string
   const [userTextInput, setUserTextInput] = useState("");
   // create another useState for the send request to GPT-4 API
-  // const [textFromGPT, setTextFromGPT] = useState("");
   // useState for modifying user messages and bot responses
   const [msgs, setMsg] = useState([]);
-  const [gpt, setGpt] = useState("")
-  const [parse, setParse] = useState("")
+  const [gpt, setGpt] = useState("");
+  const [parse, setParse] = useState("");
+  const [userData, setUserData] = useState("");
   // update text box contents as user enters or removes text
   function updateInputField(e) {
     setUserTextInput(e.target.value);
@@ -36,7 +37,6 @@ export const ChatPage = () => {
   const handleInputChange = (e) => {
     setUserTextInput(e.target.value);
   };
-
 
   const parseBotMessage = (text) => {
     const exercises = [];
@@ -93,7 +93,6 @@ export const ChatPage = () => {
   return { workoutName, exercises };
 };
 
-
 const handleSubmit = async (userID, botResponse) => {
   try {
     const response = await axios.post("http://localhost:5000/record/add", { ...botResponse, userID });
@@ -130,16 +129,22 @@ const handleSubmit = async (userID, botResponse) => {
     }
   };
 
+  const chatMsgsRef = useRef(null);
+  const scrollToBottom = () => {
+    if (chatMsgsRef.current) {
+      chatMsgsRef.current.scrollTop = chatMsgsRef.current.scrollHeight;
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [msgs]);
+
   // user input is stored in userTextInput variable
   // function to receive response by API
   const sendText = async () => {
-    // fill in missing parameters
     // display user input for testing purposes
-    console.log("You said: ", userTextInput);
-    // obtain api key from environment
-    // console.log(apiKey);
-    // console.log(API_KEY);
-
+    // console.log("You said: ", userTextInput);
     const generateAssistantResponse = (userInput) => {
       if (userInput.includes("recommend")) {
         recommended = true;
@@ -171,29 +176,20 @@ const handleSubmit = async (userID, botResponse) => {
         ]
       }),
     });
-    
-    
-    
-
     let GPTResponseData = await textFromGPT.json();
-    // let GPTResponse = GPTResponseData.choices[0].text;
     let GPTResponse = GPTResponseData.choices[0].message.content;
     if(recommended){
       setGpt(GPTResponse)
     }
-    
     // display bot response to the console for testing purposes
-    console.log("ChatGPT said: ", GPTResponse);
+    // console.log("ChatGPT said: ", GPTResponse);
     setMsg([
       ...msgs, 
       {text: userTextInput, sender: "User"}, 
       {text: GPTResponse, sender: "ChatGPT"}
     ]);
-    // test output of msgs array
     console.log(msgs[0]);  
     console.log(msgs[1]);
-    // console.log(setMsg[0]);
-    // console.log(setMsg[1]); 
     // reset the underlying contents of the text box
     setUserTextInput("");
     const parseResponse = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -233,41 +229,50 @@ const handleSubmit = async (userID, botResponse) => {
       setParse(parsedData.choices[0].message.content);
       handleSubmit(userId, parseBotMessage(parse))
       recommended = false;
-
     }
-   
   }
+  // display user's name on page
+  useEffect(() => {
+    // Fetch user data using userId
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/workouts", {
+          params: {
+            userId: userId
+          }
+        }); 
+        setUserData(response.data);
+        console.log(response);
+      } 
+      catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+    fetchUserData();
+  }, [userId]);
   
-
-
-  
-  
-
-  /* create functions for placing user and bot messages in chat bubbles
-     in the chat box. (Partially Complete) */
-
-
-
   return (
     <>
       <div className="chat-page-layout-design">
         <div className="sidebar">
-          <div className="user-profile-image">Profile Picture</div>
+          <div className="user-profile-image"></div>
           <div className="user-name">
-            FirstName LastName
+            {userData ? userData.name : 'User' /* display user's name from database */}
           </div>
-          <Button className="home-button" 
+          <button className="home-button" 
             component={Link} to='/home/:id'>
-              Home
-          </Button>
-          <Button className="plan-workout-button">Plan a Workout</Button>
-          <Button className="view-progress-button" 
+              HOME
+          </button>
+          
+          <button className="plan-workout-button" 
+            component={Link} to='/profile/:id'> MY PROFILE
+          </button>
+          
+          <button className="view-progress-button" 
             component={Link} to="/progress/:id">
-              View Progress
-          </Button>
-          <Button className="exit-button">
-            <img className="exit-button-icon" alt="Exit" src={exit}></img>
-          </Button>
+              VIEW PROGRESS
+          </button>
+          
         </div>
         <svg
           class="chat-section"
@@ -287,13 +292,8 @@ const handleSubmit = async (userID, botResponse) => {
         <div className="identification-of-ai-section"></div>
         <img className="raise-the-bar-chat-icon" alt="Chat Icon" src={logo}></img>
         <div className="chat-page-title">CHAT</div>
-        <div className="chat-message-board">
-          <div className="chat-messages-section">
-            {/* {msgs.map((msg, index) => (
-              <div key={index} className={`message ${msg.sender}`}>
-                {msg.text}
-              </div>
-            ))} */}
+        <div className="chat-message-board" ref={chatMsgsRef}>
+          <div ref={chatMsgsRef} className="chat-messages-section">
             <div className="messenger-icon"></div>
             {msgs.map((msg, index) => (
               <div key={index} className={`message ${msg.sender}`}>
@@ -302,12 +302,12 @@ const handleSubmit = async (userID, botResponse) => {
             ))}
           </div>
         </div>
-        <Button className="enter-button" onClick={ifEnterButtonPressed}>
+        <button className="enter-button" onClick={ifEnterButtonPressed}>
           <img className="enter-button-icon" alt="Enter" src={send}></img>
-        </Button>
-        <Button className="clear-button" onClick={ifClearButtonPressed}>
+        </button>
+        <button className="clear-button" onClick={ifClearButtonPressed}>
           <img className="clear-button-icon" alt="Clear" src={clear}></img>
-        </Button>
+        </button>
         <div className="raise-the-bar-chat-icon-text">Raise the Bar</div>
         <input className="text-box" 
           type="text" 
@@ -319,8 +319,5 @@ const handleSubmit = async (userID, botResponse) => {
     </>
   );
 };
-
-  
-//     /*<div>chatPage</div>*/
 
 export default ChatPage;
