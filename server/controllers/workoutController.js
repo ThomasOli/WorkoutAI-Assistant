@@ -1,5 +1,25 @@
-// Import the Workout model
+const express = require('express');
 const Workout = require('../models/workoutModel');
+
+// Controller to get workouts
+exports.getWorkouts = async (req, res) => {
+    try {
+        const { userId } = req.query;
+        if (!userId) {
+            return res.status(400).json({ message: "userId parameter is required." });
+        }
+        console.log("UserId for getWorkouts:", userId);
+
+        // Ensure the correct collection and database is targeted
+        const workouts = await Workout.find({ userId }).sort({ date: -1 });
+
+        console.log("Workouts fetched:", workouts);
+        res.json(workouts);
+    } catch (err) {
+        console.error("Error when retrieving workouts:", err);
+        res.status(500).json({ message: err.message });
+    }
+};
 
 // Controller to add a new workout
 exports.addWorkout = async (req, res) => {
@@ -64,19 +84,6 @@ exports.markComplete = async (req, res) => {
     }
   };
   
-  exports.getWorkouts = async (req, res) => {
-    try {
-      const { userId } = req.query;
-      console.log("UserId for getWorkouts:", userId);
-      const workouts = await Workout.find({ userId })
-        .populate('userId', 'name email') // Populate the User document with name and email fields
-        .sort({ date: -1 });
-      console.log("Workouts fetched:", workouts);
-      res.json(workouts);
-    } catch (err) {
-      res.status(500).json({ message: err.message });
-    }
-  };
   
   exports.addExerciseToWorkout = async (req, res) => {
     try {
