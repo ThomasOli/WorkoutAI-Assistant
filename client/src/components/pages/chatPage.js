@@ -11,6 +11,7 @@ import { useRef } from "react";
 import { useEffect } from "react";
 import { API_KEY } from "../config2.js";
 import { useParams } from "react-router-dom";
+import UserNavbar from "./userNavbar.js";
 // require('dotenv').config({ path: "./config.env" });
 // const apiKey = process.env.API_KEY;
 import axios from "axios";
@@ -252,7 +253,8 @@ const handleSubmit = async (userID, botResponse) => {
   }, [userId]);
   
   return (
-    <>
+    <div className='chat'>
+      {/* <UserNavbar/> */}
       <div className="chat-page-layout-design">
         <div className="sidebar">
           <div className="user-profile-image"></div>
@@ -280,10 +282,10 @@ const handleSubmit = async (userID, botResponse) => {
           
         </div>
         <svg
-          class="chat-section"
-          width="1199"
-          height="924"
-          viewBox="0 0 1199 924"
+          className="chat-section"
+          width="70%"
+          height="100%"
+          viewBox="0 0 70% 100%"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -321,7 +323,7 @@ const handleSubmit = async (userID, botResponse) => {
           onKeyDown={ifEnterKeyPressed} 
           onChange={updateInputField}/>
       </div>
-    </>
+    </div>
   );
 };
 
