@@ -70,7 +70,8 @@ body {
   margin-top: 10px;
   background: #d9d9d9;
   width: 62%;
-  height: 106px;
+  /* height: 106px; */
+  height: 11.45%;
   position: absolute;
   left: 520px;
   top: 100px;
@@ -199,10 +200,12 @@ body {
 
 .chat-message-board {
   background: #ffffff;
-  width: 62%;
-  height: 499px;
+  /* width: 62%; */
+  /* width: 893px; */
+  /* height: 499px; */
 
-  /* max-height: 500px; */
+  width: 62%;
+  height: 54%;
 
   position: absolute;
   left: 520px;
@@ -220,8 +223,8 @@ body {
 
 .chat-messages-section {
   flex: 1;
-  overflow-y: hidden;
-  overflow-x: hidden;
+  /* overflow-y: hidden;
+  overflow-x: hidden; */
   padding: 10px;
 }
 
@@ -456,14 +459,14 @@ body {
   top: 252px;
 }
 
-.overall-page {
+/* .overall-page {
   background: rgba(217, 217, 217, 0);
   width: 1531px;
   height: 890px;
   position: absolute;
   left: 10px;
   top: 18px;
-}
+} */
 
 
 
