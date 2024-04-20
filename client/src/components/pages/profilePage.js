@@ -9,10 +9,12 @@ import TextField from '@mui/material/TextField';
 import Switch from '@mui/material/Switch';
 
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 // add if logout, reset local storage of current user to empty
 
 export const ProfilePage = () => {
+  const {userId} = useParams
   // const [userStat, setUserStat] = useState(false);
   const [userInfo, setUserInfo] = useState(true);
   const [notif, setNotif] = useState(false);
@@ -51,11 +53,11 @@ export const ProfilePage = () => {
     const fetchUserInfo = async () => {
       try {
         // const res = await axios.get('http://localhost:5000/record')
-        const response = await axios.get('http://localhost:5000/api/record/:id', {_id: '65e8dc74dc06edb399d8b44a'});
-        console.log("getting user name values");
-        console.log(response);
-        console.log("getting user email value");
-        setUserEmail(response.data);
+        // const response = await axios.get('http://localhost:5000/api/login/', {userId});
+        // console.log("getting user name values");
+        // console.log(response);
+        // console.log("getting user email value");
+        // setUserEmail(response.data);
         // console.log(tasks);
       } catch (error) {
         console.error('Error fetching user information:', error);

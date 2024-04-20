@@ -1,7 +1,15 @@
-body {
-  overflow-x: hidden;
-  overflow-y: hidden;
+.chat {
   max-width: 100%;
+  min-height: 100vh;
+  /* margin-top: 96px; */
+}
+
+body {
+  /* overflow-x: hidden;
+  overflow-y: hidden; */
+  /* adding scrolling to see full page */
+  max-width: 100%;
+  min-height: 100vh;
 }
 
 * {
@@ -18,7 +26,7 @@ body {
 
 .chat-page-layout-design {
   background: #ffffff;
-  height: 924px;
+  height: 900px;
   position: relative;
   margin-top: -75px;
 }
@@ -28,8 +36,8 @@ body {
   border-style: solid;
   border-color: #000000;
   border-width: 2px;
-  width: 359px;
-  height: 924px;
+  width: 30%;
+  height: 100%;
   flex: 1;
   position: absolute;
   left: 0px;
@@ -44,9 +52,9 @@ body {
 } */
 
 .chat-section {
-  width: 1199px;
-  height: auto;
-  position: absolute;
+  width: 70%;
+  height: 100%;
+  position: relative;
   left: 355px;
   bottom: 0px;
   top: 0px;
@@ -69,12 +77,11 @@ body {
 .identification-of-ai-section {
   margin-top: 10px;
   background: #d9d9d9;
-  width: 62%;
-  /* height: 106px; */
-  height: 11.45%;
+  width: 58%;
+  height: 106px;
   position: absolute;
   left: 520px;
-  top: 100px;
+  top: 70px;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
@@ -87,7 +94,7 @@ body {
   height: 75px;
   position: absolute;
   left: 531px;
-  top: 115px;
+  top: 85px;
   margin-top: 10px;
   object-fit: cover;
 }
@@ -106,7 +113,7 @@ body {
   height: 106px;
   position: absolute;
   left: 374px;
-  top: 100px;
+  top: 70px;
   justify-content: center;
   align-items: center;
   border-radius: 10%;
@@ -200,16 +207,14 @@ body {
 
 .chat-message-board {
   background: #ffffff;
-  /* width: 62%; */
-  /* width: 893px; */
-  /* height: 499px; */
+  width: 58%;
+  height: 499px;
 
-  width: 62%;
-  height: 54%;
+  /* max-height: 500px; */
 
   position: absolute;
   left: 520px;
-  top: 228px;
+  top: 198px;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   overflow-y: scroll; /* message board can now scroll */
 }
@@ -223,8 +228,8 @@ body {
 
 .chat-messages-section {
   flex: 1;
-  /* overflow-y: hidden;
-  overflow-x: hidden; */
+  overflow-y: hidden;
+  overflow-x: hidden;
   padding: 10px;
 }
 
@@ -286,8 +291,8 @@ body {
   height: 71.5px;
   position: absolute;
   /* 1257 */
-  left: 1258px;
-  top: 754px;
+  left: 1087px;
+  top: 714px;
   box-shadow: inset 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   cursor: pointer;
 }
@@ -315,8 +320,8 @@ body {
   height: 71.5px;
   position: absolute;
   /* 1331 */
-  left: 1336px;
-  top: 754px;
+  left: 1165px;
+  top: 714px;
   box-shadow: inset 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   cursor: pointer;
   transition: background-color 0.25s;
@@ -351,7 +356,7 @@ body {
   margin-top: 10px;
   position: absolute;
   left: 621px;
-  top: 134px;
+  top: 104px;
 }
 
 .raise-the-bar {
@@ -429,9 +434,9 @@ body {
   font-size: 22px;
   font-weight: 400;
   position: absolute;
-  width: 740px;
+  width: 45%;
   left: 552px;
-  top: 777px;
+  top: 737px;
   margin-left: -33px;
   margin-top: -23px;
   padding-bottom: 24px;
@@ -459,14 +464,14 @@ body {
   top: 252px;
 }
 
-/* .overall-page {
+.overall-page {
   background: rgba(217, 217, 217, 0);
   width: 1531px;
   height: 890px;
   position: absolute;
   left: 10px;
   top: 18px;
-} */
+}
 
 
 
