@@ -206,7 +206,7 @@ export const ProfilePage = () => {
     return (
       <Box margin='10px'>
         Notification Settings
-        Change when you get email remidners
+        Change when you get email reminders
         <br/>
         <Grid2 container>
           <Grid2 item xs={8}>
