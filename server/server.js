@@ -12,6 +12,8 @@ const cron = require('node-cron');
 const nodemailer = require('nodemailer');
 const ScheduledWorkout = require('./models/scheduledWorkout');
 const scheduledWorkoutRoutes = require('./routes/scheduledWorkoutRoutes');
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
 
 
 const port = process.env.PORT || 5000;
@@ -122,3 +124,4 @@ cron.schedule('* * * * *', async () => {
     console.error('Error running reminder cron job:', error);
   }
 });
+
