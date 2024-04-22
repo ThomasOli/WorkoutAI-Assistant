@@ -1,5 +1,6 @@
 const express = require('express');
 const Workout = require('../models/workoutModel');
+const mongoose = require('mongoose'); 
 
 // Controller to get workouts
 exports.getWorkouts = async (req, res) => {

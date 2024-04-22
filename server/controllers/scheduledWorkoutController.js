@@ -42,27 +42,30 @@ exports.setReminder = async (req, res) => {
       return res.status(404).json({ message: 'Scheduled workout not found' });
     }
 
-    // Fetch the user's email to send the reminder to
     const user = await User.findById(scheduledWorkout.userId);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // Update the ScheduledWorkout document with reminder information
     scheduledWorkout.reminder.enabled = true;
     scheduledWorkout.reminder.remindAt = remindAt;
     await scheduledWorkout.save();
 
+    // Calculate hours left until the scheduled workout
+    const hoursLeft = Math.ceil((new Date(scheduledWorkout.scheduledDate) - new Date(remindAt)) / 3600000);
+
+    const message = hoursLeft > 0
+      ? `Don't forget to exercise in ${hoursLeft} hours!`
+      : "It's time for your scheduled workout. Go for it!";
+
     // Schedule the reminder email
     const job = cron.schedule(new Date(remindAt).toISOString(), async () => {
-       
-        const mailOptions = {
-            from: process.env.EMAIL_USER, // Use environment variable for sender email
-            to: user.email, // User's email
-            subject: 'Workout Reminder',
-            text: `Just a reminder to complete your workout scheduled for ${scheduledWorkout.scheduledDate}. Go for it!`
-          };
-          
+      const mailOptions = {
+          from: process.env.EMAIL_USER,
+          to: user.email,
+          subject: 'Workout Reminder',
+          text: message
+      };
 
       try {
         await transporter.sendMail(mailOptions);
@@ -72,7 +75,6 @@ exports.setReminder = async (req, res) => {
       }
     });
 
-    // Response with the updated ScheduledWorkout
     res.json(scheduledWorkout);
   } catch (err) {
     res.status(500).json({ message: err.message });
