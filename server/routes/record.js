@@ -26,10 +26,11 @@ recordRoutes.route("/record/add").post(async (req, response) => {
 
     // Create the new workout object based on the provided details
     const newWorkout = {
-      date: new Date(),
+      dateCreated: new Date(),
+      dateUpdated: new Date(),
       name: workoutName,
-      userID: ObjectId(userID),
-      favorited: false,
+      userId: userID,
+      isFavorite: false,
       completed: Array(exercises.length).fill(false),
       exercises: exercises // Array of exercises
     };
